@@ -12,7 +12,7 @@ import ugt.entidades.Tbpdf;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbpdfFacade extends AbstractFacade<Tbpdf> implements TbpdfFacadeLocal {

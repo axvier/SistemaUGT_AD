@@ -11,7 +11,7 @@ import ugt.entidades.Tbordenesmovilizaciones;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TbordenesmovilizacionesFacadeLocal {

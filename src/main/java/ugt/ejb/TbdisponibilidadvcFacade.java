@@ -12,7 +12,7 @@ import ugt.entidades.Tbdisponibilidadvc;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbdisponibilidadvcFacade extends AbstractFacade<Tbdisponibilidadvc> implements TbdisponibilidadvcFacadeLocal {

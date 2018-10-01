@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Entity
 @Table(schema = "esquemaugt")
@@ -58,18 +58,18 @@ public class Tbsolicitudes implements Serializable {
     @Column(name = "numero")
     private Integer numero;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "solicitud")
+    private Collection<Tbseccionviajes> tbseccionviajesCollection;
+    @OneToMany(mappedBy = "solicitud")
+    private Collection<Tbseccionsolicitantes> tbseccionsolicitantesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "solicitud")
+    private Collection<Tbseccionmotivo> tbseccionmotivoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "solicitud")
     private Collection<Tbordenesmovilizaciones> tbordenesmovilizacionesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "solicitud")
     private Collection<Tbdisponibilidadvc> tbdisponibilidadvcCollection;
     @JoinColumn(name = "idpdf", referencedColumnName = "idpdf")
     @ManyToOne
     private Tbpdf idpdf;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "solicitud")
-    private Collection<Tbseccionviajes> tbseccionviajesCollection;
-    @OneToMany(mappedBy = "solicitud")
-    private Collection<Tbseccionsolicitantes> tbseccionsolicitantesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "solicitud")
-    private Collection<Tbseccionmotivo> tbseccionmotivoCollection;
 
     public Tbsolicitudes() {
     }
@@ -111,32 +111,6 @@ public class Tbsolicitudes implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Tbordenesmovilizaciones> getTbordenesmovilizacionesCollection() {
-        return tbordenesmovilizacionesCollection;
-    }
-
-    public void setTbordenesmovilizacionesCollection(Collection<Tbordenesmovilizaciones> tbordenesmovilizacionesCollection) {
-        this.tbordenesmovilizacionesCollection = tbordenesmovilizacionesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Tbdisponibilidadvc> getTbdisponibilidadvcCollection() {
-        return tbdisponibilidadvcCollection;
-    }
-
-    public void setTbdisponibilidadvcCollection(Collection<Tbdisponibilidadvc> tbdisponibilidadvcCollection) {
-        this.tbdisponibilidadvcCollection = tbdisponibilidadvcCollection;
-    }
-
-    public Tbpdf getIdpdf() {
-        return idpdf;
-    }
-
-    public void setIdpdf(Tbpdf idpdf) {
-        this.idpdf = idpdf;
-    }
-
-    @XmlTransient
     public Collection<Tbseccionviajes> getTbseccionviajesCollection() {
         return tbseccionviajesCollection;
     }
@@ -161,6 +135,32 @@ public class Tbsolicitudes implements Serializable {
 
     public void setTbseccionmotivoCollection(Collection<Tbseccionmotivo> tbseccionmotivoCollection) {
         this.tbseccionmotivoCollection = tbseccionmotivoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Tbordenesmovilizaciones> getTbordenesmovilizacionesCollection() {
+        return tbordenesmovilizacionesCollection;
+    }
+
+    public void setTbordenesmovilizacionesCollection(Collection<Tbordenesmovilizaciones> tbordenesmovilizacionesCollection) {
+        this.tbordenesmovilizacionesCollection = tbordenesmovilizacionesCollection;
+    }
+
+    @XmlTransient
+    public Collection<Tbdisponibilidadvc> getTbdisponibilidadvcCollection() {
+        return tbdisponibilidadvcCollection;
+    }
+
+    public void setTbdisponibilidadvcCollection(Collection<Tbdisponibilidadvc> tbdisponibilidadvcCollection) {
+        this.tbdisponibilidadvcCollection = tbdisponibilidadvcCollection;
+    }
+
+    public Tbpdf getIdpdf() {
+        return idpdf;
+    }
+
+    public void setIdpdf(Tbpdf idpdf) {
+        this.idpdf = idpdf;
     }
 
     @Override

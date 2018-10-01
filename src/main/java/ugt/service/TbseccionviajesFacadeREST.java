@@ -23,7 +23,7 @@ import ugt.entidades.Tbseccionviajes;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbseccionviajes")

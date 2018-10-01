@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Embeddable
 public class TbvehiculosdependenciasPK implements Serializable {

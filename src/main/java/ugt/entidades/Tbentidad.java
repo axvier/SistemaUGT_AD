@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Entity
 @Table(schema = "esquemaugt")
@@ -34,7 +34,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Tbentidad.findAll", query = "SELECT t FROM Tbentidad t")
     , @NamedQuery(name = "Tbentidad.findByIdentidad", query = "SELECT t FROM Tbentidad t WHERE t.identidad = :identidad")
-    , @NamedQuery(name = "Tbentidad.findByIdpadre", query = "SELECT t FROM Tbentidad t WHERE t.idpadre = :idpadre")
     , @NamedQuery(name = "Tbentidad.findByCodigoentidad", query = "SELECT t FROM Tbentidad t WHERE t.codigoentidad = :codigoentidad")
     , @NamedQuery(name = "Tbentidad.findByNombre", query = "SELECT t FROM Tbentidad t WHERE t.nombre = :nombre")})
 public class Tbentidad implements Serializable {
@@ -45,8 +44,6 @@ public class Tbentidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "identidad")
     private Integer identidad;
-    @Column(name = "idpadre")
-    private Integer idpadre;
     @Size(max = 50)
     @Column(name = "codigoentidad")
     private String codigoentidad;
@@ -55,6 +52,11 @@ public class Tbentidad implements Serializable {
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tbentidad")
     private Collection<Tbusuariosentidad> tbusuariosentidadCollection;
+    @OneToMany(mappedBy = "idpadre")
+    private Collection<Tbentidad> tbentidadCollection;
+    @JoinColumn(name = "idpadre", referencedColumnName = "identidad")
+    @ManyToOne
+    private Tbentidad idpadre;
     @JoinColumn(name = "idtipo", referencedColumnName = "idtipo")
     @ManyToOne
     private Tbtipoentidad idtipo;
@@ -72,14 +74,6 @@ public class Tbentidad implements Serializable {
 
     public void setIdentidad(Integer identidad) {
         this.identidad = identidad;
-    }
-
-    public Integer getIdpadre() {
-        return idpadre;
-    }
-
-    public void setIdpadre(Integer idpadre) {
-        this.idpadre = idpadre;
     }
 
     public String getCodigoentidad() {
@@ -105,6 +99,23 @@ public class Tbentidad implements Serializable {
 
     public void setTbusuariosentidadCollection(Collection<Tbusuariosentidad> tbusuariosentidadCollection) {
         this.tbusuariosentidadCollection = tbusuariosentidadCollection;
+    }
+
+    @XmlTransient
+    public Collection<Tbentidad> getTbentidadCollection() {
+        return tbentidadCollection;
+    }
+
+    public void setTbentidadCollection(Collection<Tbentidad> tbentidadCollection) {
+        this.tbentidadCollection = tbentidadCollection;
+    }
+
+    public Tbentidad getIdpadre() {
+        return idpadre;
+    }
+
+    public void setIdpadre(Tbentidad idpadre) {
+        this.idpadre = idpadre;
     }
 
     public Tbtipoentidad getIdtipo() {

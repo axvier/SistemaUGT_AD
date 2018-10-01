@@ -23,7 +23,7 @@ import ugt.entidades.Tbconductores;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbconductores")

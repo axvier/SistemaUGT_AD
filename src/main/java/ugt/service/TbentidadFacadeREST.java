@@ -22,7 +22,7 @@ import ugt.entidades.Tbentidad;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbentidad")

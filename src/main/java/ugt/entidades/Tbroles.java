@@ -54,6 +54,8 @@ public class Tbroles implements Serializable {
     @Size(max = 20)
     @Column(name = "estado")
     private String estado;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tbroles")
+    private Collection<Tbusuariosentidad> tbusuariosentidadCollection;
     @JoinColumn(name = "gerarquia", referencedColumnName = "idtipo")
     @ManyToOne
     private Tbtipoentidad gerarquia;
@@ -97,6 +99,15 @@ public class Tbroles implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    @XmlTransient
+    public Collection<Tbusuariosentidad> getTbusuariosentidadCollection() {
+        return tbusuariosentidadCollection;
+    }
+
+    public void setTbusuariosentidadCollection(Collection<Tbusuariosentidad> tbusuariosentidadCollection) {
+        this.tbusuariosentidadCollection = tbusuariosentidadCollection;
     }
 
     public Tbtipoentidad getGerarquia() {

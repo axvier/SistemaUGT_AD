@@ -11,7 +11,7 @@ import ugt.entidades.Tblicencias;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TblicenciasFacadeLocal {

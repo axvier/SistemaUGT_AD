@@ -11,7 +11,7 @@ import ugt.entidades.Tbcomisiones;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TbcomisionesFacadeLocal {

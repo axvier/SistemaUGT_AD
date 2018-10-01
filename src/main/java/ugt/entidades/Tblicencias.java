@@ -10,40 +10,35 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Entity
 @Table(schema = "esquemaugt")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tblicencias.findAll", query = "SELECT t FROM Tblicencias t")
-    , @NamedQuery(name = "Tblicencias.findByCedula", query = "SELECT t FROM Tblicencias t WHERE t.cedula = :cedula")
     , @NamedQuery(name = "Tblicencias.findByTipo", query = "SELECT t FROM Tblicencias t WHERE t.tipo = :tipo")
     , @NamedQuery(name = "Tblicencias.findByFechaexpedicion", query = "SELECT t FROM Tblicencias t WHERE t.fechaexpedicion = :fechaexpedicion")
-    , @NamedQuery(name = "Tblicencias.findByFechaexpiracion", query = "SELECT t FROM Tblicencias t WHERE t.fechaexpiracion = :fechaexpiracion")})
+    , @NamedQuery(name = "Tblicencias.findByFechaexpiracion", query = "SELECT t FROM Tblicencias t WHERE t.fechaexpiracion = :fechaexpiracion")
+    , @NamedQuery(name = "Tblicencias.findByIdlicencia", query = "SELECT t FROM Tblicencias t WHERE t.idlicencia = :idlicencia")})
 public class Tblicencias implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "cedula")
-    private String cedula;
     @Basic(optional = false)
     @NotNull
     @Column(name = "tipo")
@@ -58,30 +53,27 @@ public class Tblicencias implements Serializable {
     @Column(name = "fechaexpiracion")
     @Temporal(TemporalType.DATE)
     private Date fechaexpiracion;
-    @JoinColumn(name = "cedula", referencedColumnName = "cedula", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Tbconductores tbconductores;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idlicencia")
+    private Integer idlicencia;
+    @JoinColumn(name = "cedulac", referencedColumnName = "cedula")
+    @ManyToOne(optional = false)
+    private Tbconductores cedulac;
 
     public Tblicencias() {
     }
 
-    public Tblicencias(String cedula) {
-        this.cedula = cedula;
+    public Tblicencias(Integer idlicencia) {
+        this.idlicencia = idlicencia;
     }
 
-    public Tblicencias(String cedula, Character tipo, Date fechaexpedicion, Date fechaexpiracion) {
-        this.cedula = cedula;
+    public Tblicencias(Integer idlicencia, Character tipo, Date fechaexpedicion, Date fechaexpiracion) {
+        this.idlicencia = idlicencia;
         this.tipo = tipo;
         this.fechaexpedicion = fechaexpedicion;
         this.fechaexpiracion = fechaexpiracion;
-    }
-
-    public String getCedula() {
-        return cedula;
-    }
-
-    public void setCedula(String cedula) {
-        this.cedula = cedula;
     }
 
     public Character getTipo() {
@@ -108,18 +100,26 @@ public class Tblicencias implements Serializable {
         this.fechaexpiracion = fechaexpiracion;
     }
 
-    public Tbconductores getTbconductores() {
-        return tbconductores;
+    public Integer getIdlicencia() {
+        return idlicencia;
     }
 
-    public void setTbconductores(Tbconductores tbconductores) {
-        this.tbconductores = tbconductores;
+    public void setIdlicencia(Integer idlicencia) {
+        this.idlicencia = idlicencia;
+    }
+
+    public Tbconductores getCedulac() {
+        return cedulac;
+    }
+
+    public void setCedulac(Tbconductores cedulac) {
+        this.cedulac = cedulac;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (cedula != null ? cedula.hashCode() : 0);
+        hash += (idlicencia != null ? idlicencia.hashCode() : 0);
         return hash;
     }
 
@@ -130,7 +130,7 @@ public class Tblicencias implements Serializable {
             return false;
         }
         Tblicencias other = (Tblicencias) object;
-        if ((this.cedula == null && other.cedula != null) || (this.cedula != null && !this.cedula.equals(other.cedula))) {
+        if ((this.idlicencia == null && other.idlicencia != null) || (this.idlicencia != null && !this.idlicencia.equals(other.idlicencia))) {
             return false;
         }
         return true;
@@ -138,7 +138,7 @@ public class Tblicencias implements Serializable {
 
     @Override
     public String toString() {
-        return "ugt.entidades.Tblicencias[ cedula=" + cedula + " ]";
+        return "ugt.entidades.Tblicencias[ idlicencia=" + idlicencia + " ]";
     }
     
 }

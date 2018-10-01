@@ -12,7 +12,7 @@ import ugt.entidades.Tbseccionsolicitantes;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbseccionsolicitantesFacade extends AbstractFacade<Tbseccionsolicitantes> implements TbseccionsolicitantesFacadeLocal {

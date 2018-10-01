@@ -11,7 +11,7 @@ import ugt.entidades.Tbtipoentidad;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TbtipoentidadFacadeLocal {

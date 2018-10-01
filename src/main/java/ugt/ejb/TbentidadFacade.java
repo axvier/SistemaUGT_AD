@@ -12,7 +12,7 @@ import ugt.entidades.Tbentidad;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbentidadFacade extends AbstractFacade<Tbentidad> implements TbentidadFacadeLocal {

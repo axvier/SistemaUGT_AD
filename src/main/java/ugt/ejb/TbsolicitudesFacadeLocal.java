@@ -11,7 +11,7 @@ import ugt.entidades.Tbsolicitudes;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TbsolicitudesFacadeLocal {

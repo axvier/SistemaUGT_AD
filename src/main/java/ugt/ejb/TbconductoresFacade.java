@@ -14,7 +14,7 @@ import ugt.entidades.Tbconductores;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbconductoresFacade extends AbstractFacade<Tbconductores> implements TbconductoresFacadeLocal {
@@ -30,7 +30,7 @@ public class TbconductoresFacade extends AbstractFacade<Tbconductores> implement
     public TbconductoresFacade() {
         super(Tbconductores.class);
     }
-
+    
     @Override
     public List<Tbconductores> disponibles() {
         List<Tbconductores> listaconductor = null;
@@ -41,7 +41,7 @@ public class TbconductoresFacade extends AbstractFacade<Tbconductores> implement
             query.setParameter(1, "Bloqueado");
             listaconductor = query.getResultList();
         } catch (Exception e) {
-        }
+}
         return listaconductor;
     }
 

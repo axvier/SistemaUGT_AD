@@ -24,7 +24,7 @@ import ugt.entidades.TbvehiculosconductoresPK;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbvehiculosconductores")

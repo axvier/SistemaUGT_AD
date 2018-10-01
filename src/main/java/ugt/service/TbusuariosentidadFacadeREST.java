@@ -25,7 +25,7 @@ import ugt.entidades.TbusuariosentidadPK;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbusuariosentidad")

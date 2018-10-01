@@ -14,7 +14,7 @@ import ugt.entidades.Tbvehiculosconductores;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbvehiculosconductoresFacade extends AbstractFacade<Tbvehiculosconductores> implements TbvehiculosconductoresFacadeLocal {
@@ -41,12 +41,12 @@ public class TbvehiculosconductoresFacade extends AbstractFacade<Tbvehiculoscond
             Query con = em.createQuery(consulta);
             con.setParameter("cedula", cedula);
             listavehiculo = con.getResultList();
-            if(listavehiculo.size() > 0  && listavehiculo.size() < 2){
+            if (listavehiculo.size() > 0 && listavehiculo.size() < 2) {
                 result = listavehiculo.get(0);
             }
         } catch (Exception e) {
         }
         return result;
     }
-    
+
 }

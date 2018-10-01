@@ -23,7 +23,7 @@ import ugt.entidades.Tbsolicitudes;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbsolicitudes")

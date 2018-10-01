@@ -12,7 +12,7 @@ import ugt.entidades.Tbcomisiones;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbcomisionesFacade extends AbstractFacade<Tbcomisiones> implements TbcomisionesFacadeLocal {

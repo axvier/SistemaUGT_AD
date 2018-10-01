@@ -12,7 +12,7 @@ import ugt.entidades.Tbrevisionesmecanicas;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbrevisionesmecanicasFacade extends AbstractFacade<Tbrevisionesmecanicas> implements TbrevisionesmecanicasFacadeLocal {

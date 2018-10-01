@@ -22,7 +22,7 @@ import ugt.entidades.Tbpdf;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbpdf")

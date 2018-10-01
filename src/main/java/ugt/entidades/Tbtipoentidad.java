@@ -48,6 +48,8 @@ public class Tbtipoentidad implements Serializable {
     private String descripcion;
     @OneToMany(mappedBy = "gerarquia")
     private Collection<Tbroles> tbrolesCollection;
+    @OneToMany(mappedBy = "idtipo")
+    private Collection<Tbentidad> tbentidadCollection;
 
     public Tbtipoentidad() {
     }
@@ -84,6 +86,15 @@ public class Tbtipoentidad implements Serializable {
 
     public void setTbrolesCollection(Collection<Tbroles> tbrolesCollection) {
         this.tbrolesCollection = tbrolesCollection;
+    }
+
+    @XmlTransient
+    public Collection<Tbentidad> getTbentidadCollection() {
+        return tbentidadCollection;
+    }
+
+    public void setTbentidadCollection(Collection<Tbentidad> tbentidadCollection) {
+        this.tbentidadCollection = tbentidadCollection;
     }
 
     @Override

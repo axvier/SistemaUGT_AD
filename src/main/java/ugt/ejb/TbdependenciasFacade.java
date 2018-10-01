@@ -12,7 +12,7 @@ import ugt.entidades.Tbdependencias;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbdependenciasFacade extends AbstractFacade<Tbdependencias> implements TbdependenciasFacadeLocal {

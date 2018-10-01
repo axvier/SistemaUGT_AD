@@ -12,7 +12,7 @@ import ugt.entidades.Tbordenesmovilizaciones;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbordenesmovilizacionesFacade extends AbstractFacade<Tbordenesmovilizaciones> implements TbordenesmovilizacionesFacadeLocal {

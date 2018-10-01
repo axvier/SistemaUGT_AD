@@ -23,7 +23,7 @@ import ugt.entidades.Tbdisponibilidadvc;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbdisponibilidadvc")

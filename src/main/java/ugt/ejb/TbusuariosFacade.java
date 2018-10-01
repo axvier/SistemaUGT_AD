@@ -12,7 +12,7 @@ import ugt.entidades.Tbusuarios;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbusuariosFacade extends AbstractFacade<Tbusuarios> implements TbusuariosFacadeLocal {

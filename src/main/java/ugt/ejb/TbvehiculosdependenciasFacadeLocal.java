@@ -11,7 +11,7 @@ import ugt.entidades.Tbvehiculosdependencias;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TbvehiculosdependenciasFacadeLocal {

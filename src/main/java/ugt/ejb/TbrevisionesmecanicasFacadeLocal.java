@@ -11,7 +11,7 @@ import ugt.entidades.Tbrevisionesmecanicas;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TbrevisionesmecanicasFacadeLocal {

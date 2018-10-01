@@ -6,7 +6,9 @@
 package ugt.entidades;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,14 +16,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Entity
 @Table(schema = "esquemaugt")
@@ -66,6 +70,14 @@ public class Tbvehiculos implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "modelo")
     private String modelo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tbvehiculos")
+    private Collection<Tbvehiculosdependencias> tbvehiculosdependenciasCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "matricula")
+    private Collection<Tbdisponibilidadvc> tbdisponibilidadvcCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "matricula")
+    private Collection<Tbrevisionesmecanicas> tbrevisionesmecanicasCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tbvehiculos")
+    private Collection<Tbvehiculosconductores> tbvehiculosconductoresCollection;
     @JoinColumn(name = "idgrupo", referencedColumnName = "idgrupo")
     @ManyToOne(optional = false)
     private Tbgrupovehiculos idgrupo;
@@ -144,6 +156,42 @@ public class Tbvehiculos implements Serializable {
 
     public void setModelo(String modelo) {
         this.modelo = modelo;
+    }
+
+    @XmlTransient
+    public Collection<Tbvehiculosdependencias> getTbvehiculosdependenciasCollection() {
+        return tbvehiculosdependenciasCollection;
+    }
+
+    public void setTbvehiculosdependenciasCollection(Collection<Tbvehiculosdependencias> tbvehiculosdependenciasCollection) {
+        this.tbvehiculosdependenciasCollection = tbvehiculosdependenciasCollection;
+    }
+
+    @XmlTransient
+    public Collection<Tbdisponibilidadvc> getTbdisponibilidadvcCollection() {
+        return tbdisponibilidadvcCollection;
+    }
+
+    public void setTbdisponibilidadvcCollection(Collection<Tbdisponibilidadvc> tbdisponibilidadvcCollection) {
+        this.tbdisponibilidadvcCollection = tbdisponibilidadvcCollection;
+    }
+
+    @XmlTransient
+    public Collection<Tbrevisionesmecanicas> getTbrevisionesmecanicasCollection() {
+        return tbrevisionesmecanicasCollection;
+    }
+
+    public void setTbrevisionesmecanicasCollection(Collection<Tbrevisionesmecanicas> tbrevisionesmecanicasCollection) {
+        this.tbrevisionesmecanicasCollection = tbrevisionesmecanicasCollection;
+    }
+
+    @XmlTransient
+    public Collection<Tbvehiculosconductores> getTbvehiculosconductoresCollection() {
+        return tbvehiculosconductoresCollection;
+    }
+
+    public void setTbvehiculosconductoresCollection(Collection<Tbvehiculosconductores> tbvehiculosconductoresCollection) {
+        this.tbvehiculosconductoresCollection = tbvehiculosconductoresCollection;
     }
 
     public Tbgrupovehiculos getIdgrupo() {

@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Entity
 @Table(schema = "esquemaugt")

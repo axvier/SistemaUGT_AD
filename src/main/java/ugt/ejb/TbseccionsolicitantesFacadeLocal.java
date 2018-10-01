@@ -11,7 +11,7 @@ import ugt.entidades.Tbseccionsolicitantes;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TbseccionsolicitantesFacadeLocal {

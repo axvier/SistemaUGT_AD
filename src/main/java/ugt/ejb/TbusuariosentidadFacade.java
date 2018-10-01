@@ -14,7 +14,7 @@ import ugt.entidades.Tbusuariosentidad;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbusuariosentidadFacade extends AbstractFacade<Tbusuariosentidad> implements TbusuariosentidadFacadeLocal {
@@ -30,7 +30,7 @@ public class TbusuariosentidadFacade extends AbstractFacade<Tbusuariosentidad> i
     public TbusuariosentidadFacade() {
         super(Tbusuariosentidad.class);
     }
-
+    
     @Override
     public Tbusuariosentidad buscarusuarioentidad(String cedula) {
         List<Tbusuariosentidad> listauserentidad = null;
@@ -43,7 +43,7 @@ public class TbusuariosentidadFacade extends AbstractFacade<Tbusuariosentidad> i
             listauserentidad = query.getResultList();
             if(listauserentidad.size()>0){
                 result = listauserentidad.get(0);
-            }
+}
         } catch (Exception e) {
         }
         return result;

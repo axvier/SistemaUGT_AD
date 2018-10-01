@@ -11,7 +11,7 @@ import ugt.entidades.Tbseccionviajes;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TbseccionviajesFacadeLocal {

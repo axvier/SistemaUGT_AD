@@ -23,7 +23,7 @@ import ugt.entidades.Tbcomisiones;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbcomisiones")

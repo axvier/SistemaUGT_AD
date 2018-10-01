@@ -12,7 +12,7 @@ import ugt.entidades.Tbopciones;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbopcionesFacade extends AbstractFacade<Tbopciones> implements TbopcionesFacadeLocal {

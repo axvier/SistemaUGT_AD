@@ -22,7 +22,7 @@ import ugt.entidades.Tbdependencias;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbdependencias")

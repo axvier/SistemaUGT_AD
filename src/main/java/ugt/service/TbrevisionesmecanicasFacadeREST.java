@@ -22,7 +22,7 @@ import ugt.entidades.Tbrevisionesmecanicas;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbrevisionesmecanicas")

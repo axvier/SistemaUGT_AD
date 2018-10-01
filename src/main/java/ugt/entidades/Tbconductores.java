@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Entity
 @Table(schema = "esquemaugt")
@@ -70,8 +70,8 @@ public class Tbconductores implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "estado")
     private String estado;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tbconductores")
-    private Tblicencias tblicencias;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cedulac")
+    private Collection<Tblicencias> tblicenciasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cedulaCond")
     private Collection<Tbdisponibilidadvc> tbdisponibilidadvcCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tbconductores")
@@ -139,12 +139,13 @@ public class Tbconductores implements Serializable {
         this.estado = estado;
     }
 
-    public Tblicencias getTblicencias() {
-        return tblicencias;
+    @XmlTransient
+    public Collection<Tblicencias> getTblicenciasCollection() {
+        return tblicenciasCollection;
     }
 
-    public void setTblicencias(Tblicencias tblicencias) {
-        this.tblicencias = tblicencias;
+    public void setTblicenciasCollection(Collection<Tblicencias> tblicenciasCollection) {
+        this.tblicenciasCollection = tblicenciasCollection;
     }
 
     @XmlTransient

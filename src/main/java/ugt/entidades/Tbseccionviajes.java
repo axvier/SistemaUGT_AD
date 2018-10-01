@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Entity
 @Table(schema = "esquemaugt")
@@ -65,11 +65,11 @@ public class Tbseccionviajes implements Serializable {
     @Size(max = 15)
     @Column(name = "telefono")
     private String telefono;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idviaje")
-    private Collection<Tbpasajeros> tbpasajerosCollection;
     @JoinColumn(name = "solicitud", referencedColumnName = "numero")
     @ManyToOne(optional = false)
     private Tbsolicitudes solicitud;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idviaje")
+    private Collection<Tbpasajeros> tbpasajerosCollection;
 
     public Tbseccionviajes() {
     }
@@ -126,6 +126,14 @@ public class Tbseccionviajes implements Serializable {
         this.telefono = telefono;
     }
 
+    public Tbsolicitudes getSolicitud() {
+        return solicitud;
+    }
+
+    public void setSolicitud(Tbsolicitudes solicitud) {
+        this.solicitud = solicitud;
+    }
+
     @XmlTransient
     public Collection<Tbpasajeros> getTbpasajerosCollection() {
         return tbpasajerosCollection;
@@ -133,14 +141,6 @@ public class Tbseccionviajes implements Serializable {
 
     public void setTbpasajerosCollection(Collection<Tbpasajeros> tbpasajerosCollection) {
         this.tbpasajerosCollection = tbpasajerosCollection;
-    }
-
-    public Tbsolicitudes getSolicitud() {
-        return solicitud;
-    }
-
-    public void setSolicitud(Tbsolicitudes solicitud) {
-        this.solicitud = solicitud;
     }
 
     @Override

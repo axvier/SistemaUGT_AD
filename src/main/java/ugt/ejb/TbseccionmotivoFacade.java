@@ -12,7 +12,7 @@ import ugt.entidades.Tbseccionmotivo;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbseccionmotivoFacade extends AbstractFacade<Tbseccionmotivo> implements TbseccionmotivoFacadeLocal {

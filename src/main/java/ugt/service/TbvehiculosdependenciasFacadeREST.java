@@ -24,7 +24,7 @@ import ugt.entidades.TbvehiculosdependenciasPK;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbvehiculosdependencias")

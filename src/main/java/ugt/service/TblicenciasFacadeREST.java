@@ -22,7 +22,7 @@ import ugt.entidades.Tblicencias;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tblicencias")
@@ -45,20 +45,20 @@ public class TblicenciasFacadeREST extends AbstractFacade<Tblicencias> {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") String id, Tblicencias entity) {
+    public void edit(@PathParam("id") Integer id, Tblicencias entity) {
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") String id) {
+    public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Tblicencias find(@PathParam("id") String id) {
+    public Tblicencias find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 

@@ -11,7 +11,7 @@ import ugt.entidades.Tbopciones;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TbopcionesFacadeLocal {

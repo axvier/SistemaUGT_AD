@@ -12,7 +12,7 @@ import ugt.entidades.Tbtipoentidad;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbtipoentidadFacade extends AbstractFacade<Tbtipoentidad> implements TbtipoentidadFacadeLocal {

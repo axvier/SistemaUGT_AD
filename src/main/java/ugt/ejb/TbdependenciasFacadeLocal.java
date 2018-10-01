@@ -11,7 +11,7 @@ import ugt.entidades.Tbdependencias;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TbdependenciasFacadeLocal {

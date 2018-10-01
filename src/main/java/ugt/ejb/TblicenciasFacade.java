@@ -12,7 +12,7 @@ import ugt.entidades.Tblicencias;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TblicenciasFacade extends AbstractFacade<Tblicencias> implements TblicenciasFacadeLocal {

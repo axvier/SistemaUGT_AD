@@ -12,7 +12,7 @@ import ugt.entidades.Tbseccionviajes;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbseccionviajesFacade extends AbstractFacade<Tbseccionviajes> implements TbseccionviajesFacadeLocal {

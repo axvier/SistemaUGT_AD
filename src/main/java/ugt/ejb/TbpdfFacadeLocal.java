@@ -11,7 +11,7 @@ import ugt.entidades.Tbpdf;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TbpdfFacadeLocal {

@@ -22,7 +22,7 @@ import ugt.entidades.Tbordenesmovilizaciones;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbordenesmovilizaciones")

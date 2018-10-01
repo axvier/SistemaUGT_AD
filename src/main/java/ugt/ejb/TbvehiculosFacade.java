@@ -12,7 +12,7 @@ import ugt.entidades.Tbvehiculos;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbvehiculosFacade extends AbstractFacade<Tbvehiculos> implements TbvehiculosFacadeLocal {

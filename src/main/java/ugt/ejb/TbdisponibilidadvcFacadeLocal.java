@@ -11,7 +11,7 @@ import ugt.entidades.Tbdisponibilidadvc;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TbdisponibilidadvcFacadeLocal {
