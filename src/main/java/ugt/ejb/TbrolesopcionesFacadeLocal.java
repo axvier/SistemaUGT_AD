@@ -11,7 +11,7 @@ import ugt.entidades.Tbrolesopciones;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Local
 public interface TbrolesopcionesFacadeLocal {

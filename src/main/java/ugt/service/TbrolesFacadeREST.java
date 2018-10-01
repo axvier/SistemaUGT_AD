@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -22,7 +23,7 @@ import ugt.entidades.Tbroles;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbroles")
@@ -36,17 +37,28 @@ public class TbrolesFacadeREST extends AbstractFacade<Tbroles> {
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Tbroles entity) {
+    @Produces({MediaType.APPLICATION_JSON})
+    @Transactional
+    public Tbroles insertar(Tbroles entity) {
+        Tbroles obj = new Tbroles();
         super.create(entity);
+        em.flush();
+        obj= entity;
+        return obj;
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Tbroles entity) {
+    @Produces({MediaType.APPLICATION_JSON})
+    @Transactional
+    public Tbroles modificar(@PathParam("id") Integer id, Tbroles entity) {
+        Tbroles obj = new Tbroles();
         super.edit(entity);
+        em.flush();
+        obj= entity;
+        return obj;
     }
 
     @DELETE

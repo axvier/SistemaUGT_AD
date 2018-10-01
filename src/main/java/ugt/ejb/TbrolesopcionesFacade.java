@@ -12,7 +12,7 @@ import ugt.entidades.Tbrolesopciones;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 public class TbrolesopcionesFacade extends AbstractFacade<Tbrolesopciones> implements TbrolesopcionesFacadeLocal {

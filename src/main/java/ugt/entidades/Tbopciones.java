@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Entity
 @Table(schema = "esquemaugt")
@@ -52,7 +52,7 @@ public class Tbopciones implements Serializable {
     @Size(max = 20)
     @Column(name = "estado")
     private String estado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "opcion")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idopcion")
     private Collection<Tbrolesopciones> tbrolesopcionesCollection;
 
     public Tbopciones() {

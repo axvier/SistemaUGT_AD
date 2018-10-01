@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Entity
 @Table(schema = "esquemaugt")
@@ -57,7 +57,7 @@ public class Tbroles implements Serializable {
     @JoinColumn(name = "gerarquia", referencedColumnName = "idtipo")
     @ManyToOne
     private Tbtipoentidad gerarquia;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rol")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idrol")
     private Collection<Tbrolesopciones> tbrolesopcionesCollection;
 
     public Tbroles() {

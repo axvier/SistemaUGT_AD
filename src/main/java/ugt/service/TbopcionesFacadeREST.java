@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -22,7 +23,7 @@ import ugt.entidades.Tbopciones;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Stateless
 @Path("tbopciones")
@@ -36,17 +37,28 @@ public class TbopcionesFacadeREST extends AbstractFacade<Tbopciones> {
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Tbopciones entity) {
+    @Produces({MediaType.APPLICATION_JSON})
+    @Transactional
+    public Tbopciones insertar(Tbopciones entity) {
+        Tbopciones obj = new Tbopciones();
         super.create(entity);
+        em.flush();
+        obj = entity;
+        return obj;
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Tbopciones entity) {
+    @Produces({MediaType.APPLICATION_JSON})
+    @Transactional
+    public Tbopciones modificar(@PathParam("id") Integer id, Tbopciones entity) {
+        Tbopciones obj = new Tbopciones();
         super.edit(entity);
+        em.flush();
+        obj = entity;
+        return obj;
     }
 
     @DELETE

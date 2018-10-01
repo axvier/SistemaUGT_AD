@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Usuario
+ * @author Xavy PC
  */
 @Entity
 @Table(schema = "esquemaugt")
@@ -37,12 +37,12 @@ public class Tbrolesopciones implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "opcion", referencedColumnName = "idopcion")
+    @JoinColumn(name = "idopcion", referencedColumnName = "idopcion")
     @ManyToOne(optional = false)
-    private Tbopciones opcion;
-    @JoinColumn(name = "rol", referencedColumnName = "idrol")
+    private Tbopciones idopcion;
+    @JoinColumn(name = "idrol", referencedColumnName = "idrol")
     @ManyToOne(optional = false)
-    private Tbroles rol;
+    private Tbroles idrol;
 
     public Tbrolesopciones() {
     }
@@ -59,20 +59,20 @@ public class Tbrolesopciones implements Serializable {
         this.id = id;
     }
 
-    public Tbopciones getOpcion() {
-        return opcion;
+    public Tbopciones getIdopcion() {
+        return idopcion;
     }
 
-    public void setOpcion(Tbopciones opcion) {
-        this.opcion = opcion;
+    public void setIdopcion(Tbopciones idopcion) {
+        this.idopcion = idopcion;
     }
 
-    public Tbroles getRol() {
-        return rol;
+    public Tbroles getIdrol() {
+        return idrol;
     }
 
-    public void setRol(Tbroles rol) {
-        this.rol = rol;
+    public void setIdrol(Tbroles idrol) {
+        this.idrol = idrol;
     }
 
     @Override
