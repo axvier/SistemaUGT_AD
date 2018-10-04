@@ -131,11 +131,11 @@ public class ws {
     @Path("buscaropcionesrol/{id}")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
     @Consumes({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
-    public List<Tbrolesopciones> buscaropcionesrol(@PathParam("id") int id) {
-        List<Tbrolesopciones> rolesopciones = new ArrayList<>();
+    public List<Tbopciones> buscaropcionesrol(@PathParam("id") int id) {
+        List<Tbopciones> rolesopciones = new ArrayList<>();
         for (Tbrolesopciones rolopcion : rolesopcioneslocal.findAll()) {
             if (rolopcion.getIdrol().getIdrol().equals(id)) {
-                rolesopciones.add(rolopcion);
+                rolesopciones.add(rolopcion.getIdopcion());
             }
         }
         return rolesopciones;
