@@ -32,7 +32,7 @@ public class TbusuariosentidadFacade extends AbstractFacade<Tbusuariosentidad> i
     }
     
     @Override
-    public Tbusuariosentidad buscarusuarioentidad(String cedula) {
+    public List<Tbusuariosentidad> buscarusuarioentidad(String cedula) {
         List<Tbusuariosentidad> listauserentidad = null;
         Tbusuariosentidad result = new Tbusuariosentidad();
         String consulta;
@@ -41,12 +41,9 @@ public class TbusuariosentidadFacade extends AbstractFacade<Tbusuariosentidad> i
             Query query = em.createQuery(consulta);
             query.setParameter("cedulau", cedula);
             listauserentidad = query.getResultList();
-            if(listauserentidad.size()>0){
-                result = listauserentidad.get(0);
-}
         } catch (Exception e) {
         }
-        return result;
+        return listauserentidad;
     }
     
 }

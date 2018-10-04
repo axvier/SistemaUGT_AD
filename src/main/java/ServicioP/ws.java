@@ -36,9 +36,9 @@ public class ws {
     @EJB
     private TbvehiculosFacadeLocal vehiculolocal;
     @EJB
-    private TbusuariosentidadFacadeLocal usuarioentidad;
+    private TbusuariosentidadFacadeLocal usuarioentidadlocal;
     @EJB
-    private TbopcionesFacadeLocal opcioneslocal;
+    private TbrolesopcionesFacadeLocal rolesopcioneslocal;
 
     //<editor-fold defaultstate="collapsed" desc="Busqueda de marca segun el nombre">
 //    @GET
@@ -54,7 +54,6 @@ public class ws {
 //        return marca;
 //    }
     //</editor-fold>
-
     //<editor-fold defaultstate="collapsed" desc="Busqueda de conductor por nombre">
     @GET
     @Path("conductornombre/{nombre}")
@@ -101,7 +100,7 @@ public class ws {
         List<Tbconductores> conductor = new ArrayList<>();
         if (conductorlocal.modconductor(tbconductor, cedula) > 0) {
             Tbvehiculosconductores autocond = vehiculoconductorlocal.buscarxcedula(cedula);
-            if(autocond.getTbvehiculos()!= null){
+            if (autocond.getTbvehiculos() != null) {
                 Calendar today = Calendar.getInstance();
                 autocond.setFechafin(today.getTime());
                 vehiculoconductorlocal.edit(autocond);
@@ -114,28 +113,32 @@ public class ws {
         return conductor;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Busqueda de Usuario-entidad-rol por cedula">
     @GET
     @Path("buscarusuarioentidadrol/{cedula}")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
     @Consumes({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
-    public Tbusuariosentidad buscarusuarioentidadrol(@PathParam("cedula") String cedula) {
-        Tbusuariosentidad userentidad = new Tbusuariosentidad();
-        userentidad = usuarioentidad.buscarusuarioentidad(cedula);
+    public List<Tbusuariosentidad> buscarusuarioentidadrol(@PathParam("cedula") String cedula) {
+        List<Tbusuariosentidad> userentidad = new ArrayList<>();
+        userentidad = usuarioentidadlocal.buscarusuarioentidad(cedula);
         return userentidad;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Busqueda de opciones por id Rol">
     @GET
     @Path("buscaropcionesrol/{id}")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
     @Consumes({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
-    public List<Tbopciones> buscaropcionesrol(@PathParam("id") int id) {
-        List<Tbopciones> opciones = new ArrayList<>();
-//       opciones = opcioneslocal.buscaropcionesrol(id);
-        return opciones;
+    public List<Tbrolesopciones> buscaropcionesrol(@PathParam("id") int id) {
+        List<Tbrolesopciones> rolesopciones = new ArrayList<>();
+        for (Tbrolesopciones rolopcion : rolesopcioneslocal.findAll()) {
+            if (rolopcion.getIdrol().getIdrol().equals(id)) {
+                rolesopciones.add(rolopcion);
+            }
+        }
+        return rolesopciones;
     }
     //</editor-fold>
 }

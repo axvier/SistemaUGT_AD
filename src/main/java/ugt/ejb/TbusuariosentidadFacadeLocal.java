@@ -30,6 +30,6 @@ public interface TbusuariosentidadFacadeLocal {
 
     int count();
     
-    Tbusuariosentidad buscarusuarioentidad(String cedula);
+    List<Tbusuariosentidad> buscarusuarioentidad(String cedula);
     
 }
