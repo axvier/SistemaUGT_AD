@@ -117,8 +117,8 @@ public class ws {
     //<editor-fold defaultstate="collapsed" desc="Busqueda de Usuario-entidad-rol por cedula">
     @GET
     @Path("buscarusuarioentidadrol/{cedula}")
-    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
-    @Consumes({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Produces({"application/json;  charset=utf-8;  charset=utf-8"})
+    @Consumes({"application/json;  charset=utf-8;  charset=utf-8"})
     public List<Tbusuariosentidad> buscarusuarioentidadrol(@PathParam("cedula") String cedula) {
         List<Tbusuariosentidad> userentidad = new ArrayList<>();
         userentidad = usuarioentidadlocal.buscarusuarioentidad(cedula);
