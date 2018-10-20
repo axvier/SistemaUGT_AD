@@ -39,6 +39,8 @@ public class ws {
     private TbusuariosentidadFacadeLocal usuarioentidadlocal;
     @EJB
     private TbrolesopcionesFacadeLocal rolesopcioneslocal;
+    @EJB
+    private TblicenciasFacadeLocal licenciaslocal;
 
     //<editor-fold defaultstate="collapsed" desc="Busqueda de marca segun el nombre">
 //    @GET
@@ -139,6 +141,18 @@ public class ws {
             }
         }
         return rolesopciones;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Busqueda de licencia por cedula">
+    @GET
+    @Path("buscarlicenciacedula/{cedula}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Consumes({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    public List<Tblicencias> buscaropcionesrol(@PathParam("cedula") String cedula) {
+        List<Tblicencias> result = new ArrayList<>();
+        result = licenciaslocal.buascarLicencia(cedula);
+        return result;
     }
     //</editor-fold>
 }

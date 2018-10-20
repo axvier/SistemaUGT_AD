@@ -30,4 +30,5 @@ public interface TblicenciasFacadeLocal {
 
     int count();
     
+    List<Tblicencias> buascarLicencia(String cedula);
 }
