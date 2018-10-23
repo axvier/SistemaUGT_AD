@@ -155,4 +155,19 @@ public class ws {
         return result;
     }
     //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Lista de conductor filtrado por estado">
+    @GET
+    @Path("conductoresestado/{estado}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    public List<Tbconductores> conductoresestado(@PathParam("estado") String estado) {
+        List<Tbconductores> result = new ArrayList<>();
+        for(Tbconductores conductor : conductorlocal.findAll()){
+            if(conductor.getEstado().equals(estado)){
+                result.add(conductor);
+            }
+        }
+        return result;
+    }
+    //</editor-fold>
 }
