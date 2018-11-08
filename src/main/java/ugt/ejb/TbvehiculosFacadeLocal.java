@@ -30,4 +30,8 @@ public interface TbvehiculosFacadeLocal {
 
     int count();
     
+    int modconductor(Tbvehiculos tbvehiculo, String placa);
+    
+    List<Tbvehiculos> disponibles();
+    
 }

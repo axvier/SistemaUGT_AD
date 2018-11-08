@@ -49,4 +49,22 @@ public class TbvehiculosconductoresFacade extends AbstractFacade<Tbvehiculoscond
         return result;
     }
 
+    @Override
+    public Tbvehiculosconductores buscarxplaca(String placav) {
+        Tbvehiculosconductores result = new Tbvehiculosconductores();
+        List<Tbvehiculosconductores> listavehiculo = null;
+        String consulta;
+        try {
+            consulta = "SELECT t FROM Tbvehiculosconductores t WHERE t.tbvehiculosconductoresPK.matricula = :placa and t.fechafin is null";
+            Query con = em.createQuery(consulta);
+            con.setParameter("placa", placav);
+            listavehiculo = con.getResultList();
+            if (listavehiculo.size() > 0 && listavehiculo.size() < 2) {
+                result = listavehiculo.get(0);
+            }
+        } catch (Exception e) {
+        }
+        return result;
+    }
+
 }

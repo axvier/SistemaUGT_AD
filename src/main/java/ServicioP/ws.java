@@ -170,4 +170,43 @@ public class ws {
         return result;
     }
     //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Lista de vehiculos filtrado por estado">
+    @GET
+    @Path("vehiculosestado/{estado}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    public List<Tbvehiculos> vehiculosestado(@PathParam("estado") String estado) {
+        List<Tbvehiculos> result = new ArrayList<>();
+        for(Tbvehiculos vehiculo : vehiculolocal.findAll()){
+            if(vehiculo.getEstado().equals(estado)){
+                result.add(vehiculo);
+            }
+        }
+        return result;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Bloquea Conductor y cambia a vehiculo disponible, retorna lista conductores disponibles">
+    @PUT
+    @Path("bloquearvehiculo/{cedula}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Consumes({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public List<Tbvehiculos> bloquearVehiculo(@PathParam("cedula") String placa, Tbconductores vehiculo) {
+        List<Tbvehiculos> vehiculos = new ArrayList<>();
+        if (conductorlocal.modconductor(vehiculo, placa) > 0) {
+            Tbvehiculosconductores autocond = vehiculoconductorlocal.buscarxplaca(placa);
+            if (autocond.getTbconductores()!= null) {
+                Calendar today = Calendar.getInstance();
+                autocond.setFechafin(today.getTime());
+                vehiculoconductorlocal.edit(autocond);
+                Tbconductores conductor = autocond.getTbconductores();
+                conductor.setEstado("Disponble");
+                conductorlocal.edit(conductor);
+            }
+            vehiculos = vehiculolocal.disponibles();
+        }
+        return vehiculos;
+    }
+    //</editor-fold>
 }
