@@ -143,7 +143,7 @@ public class ws {
         return rolesopciones;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Busqueda de licencia por cedula">
     @GET
     @Path("buscarlicenciacedula/{cedula}")
@@ -155,37 +155,37 @@ public class ws {
         return result;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Lista de conductor filtrado por estado">
     @GET
     @Path("conductoresestado/{estado}")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
     public List<Tbconductores> conductoresestado(@PathParam("estado") String estado) {
         List<Tbconductores> result = new ArrayList<>();
-        for(Tbconductores conductor : conductorlocal.findAll()){
-            if(conductor.getEstado().equals(estado)){
+        for (Tbconductores conductor : conductorlocal.findAll()) {
+            if (conductor.getEstado().equals(estado)) {
                 result.add(conductor);
             }
         }
         return result;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Lista de vehiculos filtrado por estado">
     @GET
     @Path("vehiculosestado/{estado}")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
     public List<Tbvehiculos> vehiculosestado(@PathParam("estado") String estado) {
         List<Tbvehiculos> result = new ArrayList<>();
-        for(Tbvehiculos vehiculo : vehiculolocal.findAll()){
-            if(vehiculo.getEstado().equals(estado)){
+        for (Tbvehiculos vehiculo : vehiculolocal.findAll()) {
+            if (vehiculo.getEstado().equals(estado)) {
                 result.add(vehiculo);
             }
         }
         return result;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Bloquea Conductor y cambia a vehiculo disponible, retorna lista conductores disponibles">
     @PUT
     @Path("bloquearvehiculo/{cedula}")
@@ -196,7 +196,7 @@ public class ws {
         List<Tbvehiculos> vehiculos = new ArrayList<>();
         if (conductorlocal.modconductor(vehiculo, placa) > 0) {
             Tbvehiculosconductores autocond = vehiculoconductorlocal.buscarxplaca(placa);
-            if (autocond.getTbconductores()!= null) {
+            if (autocond.getTbconductores() != null) {
                 Calendar today = Calendar.getInstance();
                 autocond.setFechafin(today.getTime());
                 vehiculoconductorlocal.edit(autocond);
@@ -207,6 +207,28 @@ public class ws {
             vehiculos = vehiculolocal.disponibles();
         }
         return vehiculos;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Busqueda de Vehiculo Conductor por placa">
+    @GET
+    @Path("btbvehiculosconductores/{tipopk}/{pktb}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public List<Tbvehiculosconductores> buscarvehiculoconductortipo(@PathParam("tipopk") String tipo, @PathParam("pktb") String pktb) {
+        List<Tbvehiculosconductores> vehiculosconductores = new ArrayList<>();
+        for (Tbvehiculosconductores vehiCond : vehiculoconductorlocal.findAll()) {
+            if (tipo.equals("placa")) {
+                if (vehiCond.getTbvehiculosconductoresPK().getMatricula().equals(pktb) && vehiCond.getFechafin() == null) {
+                    vehiculosconductores.add(vehiCond);
+                }
+            } else if (tipo.equals("cedula")) {
+                if (vehiCond.getTbvehiculosconductoresPK().getCedula().equals(pktb) && vehiCond.getFechafin() == null) {
+                    vehiculosconductores.add(vehiCond);
+                }
+            }
+        }
+        return vehiculosconductores;
     }
     //</editor-fold>
 }
