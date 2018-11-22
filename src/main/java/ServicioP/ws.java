@@ -8,8 +8,10 @@ package ServicioP;
 import ugt.ejb.*;
 import ugt.entidades.*;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -229,6 +231,44 @@ public class ws {
             }
         }
         return vehiculosconductores;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Busqueda de vehiculo conductor por id pcompuestos">
+    @GET
+    @Path("vehiculosconductores/cedula/{cedula}/matricula/{matricula}/fecha/{date}")
+    @Produces({"application/json;  charset=utf-8;  charset=utf-8"})
+    @Consumes({"application/json;  charset=utf-8;  charset=utf-8"})
+    @Transactional
+    public Tbvehiculosconductores vehiculoconductormatrixID(@PathParam("cedula") String cedula, @PathParam("matricula") String matricula, @PathParam("date") String fecha) {
+        Tbvehiculosconductores result = new Tbvehiculosconductores();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        for (Tbvehiculosconductores search : vehiculoconductorlocal.findAll()) {
+            try {
+                Date compare = sdf.parse(fecha);
+                if (search.getTbvehiculosconductoresPK().getCedula().equals(cedula) && search.getTbvehiculosconductoresPK().getMatricula().equals(matricula) && search.getTbvehiculosconductoresPK().getFechainicio().equals(compare)) {
+                    result = search;
+                    break;
+                }
+            } catch (Exception e) {
+            }
+        }
+        return result;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Lista de vehiculos diferente a un estado">
+    @GET
+    @Path("vehiculosnoestado/{estado}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    public List<Tbvehiculos> vehiculosnoigualestado(@PathParam("estado") String estado) {
+        List<Tbvehiculos> result = new ArrayList<>();
+        for (Tbvehiculos vehiculo : vehiculolocal.findAll()) {
+            if (!vehiculo.getEstado().equals(estado)) {
+                result.add(vehiculo);
+            }
+        }
+        return result;
     }
     //</editor-fold>
 }
