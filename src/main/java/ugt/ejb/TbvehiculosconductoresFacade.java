@@ -5,6 +5,7 @@
  */
 package ugt.ejb;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -32,7 +33,7 @@ public class TbvehiculosconductoresFacade extends AbstractFacade<Tbvehiculoscond
     }
 
     @Override
-    public Tbvehiculosconductores buscarxcedula(String cedula) {
+    public List<Tbvehiculosconductores> buscarxcedula(String cedula) {
         Tbvehiculosconductores result = new Tbvehiculosconductores();
         List<Tbvehiculosconductores> listavehiculo = null;
         String consulta;
@@ -46,7 +47,7 @@ public class TbvehiculosconductoresFacade extends AbstractFacade<Tbvehiculoscond
             }
         } catch (Exception e) {
         }
-        return result;
+        return listavehiculo;
     }
 
     @Override
@@ -62,6 +63,24 @@ public class TbvehiculosconductoresFacade extends AbstractFacade<Tbvehiculoscond
             if (listavehiculo.size() > 0 && listavehiculo.size() < 2) {
                 result = listavehiculo.get(0);
             }
+        } catch (Exception e) {
+        }
+        return result;
+    }
+
+    @Override
+    public Tbvehiculosconductores modificar(String cedula, String placa, String fecha, Tbvehiculosconductores obj) {
+        Tbvehiculosconductores result = new Tbvehiculosconductores();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String consulta;
+        try {
+            consulta = "UPDATE Tbvehiculosconductores t SET t.fechafin = :fechaf WHERE t.tbvehiculosconductoresPK.matricula = :matricula AND t.tbvehiculosconductoresPK.cedula = :cedula AND t.tbvehiculosconductoresPK.fechainicio = :fechainicio";
+            Query con = em.createQuery(consulta);
+            con.setParameter("matricula", placa);
+            con.setParameter("cedula", cedula);
+            con.setParameter("fechaf", obj.getFechafin());
+            con.setParameter("fechainicio", obj.getTbvehiculosconductoresPK().getFechainicio());
+            result = (con.executeUpdate() > 0) ? obj : null;
         } catch (Exception e) {
         }
         return result;

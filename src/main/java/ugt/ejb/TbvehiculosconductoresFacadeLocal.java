@@ -32,7 +32,9 @@ public interface TbvehiculosconductoresFacadeLocal {
     
     //buscar por cedula
     
-    Tbvehiculosconductores buscarxcedula(String cedula);
+    List<Tbvehiculosconductores> buscarxcedula(String cedula);
     
     Tbvehiculosconductores buscarxplaca(String placa);
+    
+    Tbvehiculosconductores modificar(String cedula,String placa, String fecha, Tbvehiculosconductores objeto);
 }

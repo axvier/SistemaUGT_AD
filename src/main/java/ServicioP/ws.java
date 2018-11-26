@@ -103,12 +103,12 @@ public class ws {
     public List<Tbconductores> bloquearconductor(@PathParam("cedula") String cedula, Tbconductores tbconductor) {
         List<Tbconductores> conductor = new ArrayList<>();
         if (conductorlocal.modconductor(tbconductor, cedula) > 0) {
-            Tbvehiculosconductores autocond = vehiculoconductorlocal.buscarxcedula(cedula);
-            if (autocond.getTbvehiculos() != null) {
+            List<Tbvehiculosconductores> listaVehiculosCond = vehiculoconductorlocal.buscarxcedula(cedula);
+            for(Tbvehiculosconductores autoCond : listaVehiculosCond) {
                 Calendar today = Calendar.getInstance();
-                autocond.setFechafin(today.getTime());
-                vehiculoconductorlocal.edit(autocond);
-                Tbvehiculos vehiculo = autocond.getTbvehiculos();
+                autoCond.setFechafin(today.getTime());
+                vehiculoconductorlocal.edit(autoCond);
+                Tbvehiculos vehiculo = autoCond.getTbvehiculos();
                 vehiculo.setEstado("Disponble");
                 vehiculolocal.edit(vehiculo);
             }
@@ -256,7 +256,7 @@ public class ws {
         return result;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Lista de vehiculos diferente a un estado">
     @GET
     @Path("vehiculosnoestado/{estado}")
@@ -268,6 +268,34 @@ public class ws {
                 result.add(vehiculo);
             }
         }
+        return result;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Lista de conductores diferente a un estado">
+    @GET
+    @Path("conductoresnoestado/{estado}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    public List<Tbconductores> conductoresnoigualestado(@PathParam("estado") String estado) {
+        List<Tbconductores> result = new ArrayList<>();
+        for (Tbconductores conductor : conductorlocal.findAll()) {
+            if (!conductor.getEstado().equals(estado)) {
+                result.add(conductor);
+            }
+        }
+        return result;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Modificar Vehiculo Conductor">
+    @PUT
+    @Path("vehiculosconductores/{cedula}/{placa}/{fecha}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Consumes({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public Tbvehiculosconductores vehiculoconductormod(@PathParam("cedula") String cedula, @PathParam("placa") String placa, @PathParam("fecha") String fecha, Tbvehiculosconductores objeto) {
+        Tbvehiculosconductores result = new Tbvehiculosconductores();
+        result = vehiculoconductorlocal.modificar(cedula, placa, fecha, objeto);
         return result;
     }
     //</editor-fold>

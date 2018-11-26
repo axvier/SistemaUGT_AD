@@ -63,17 +63,24 @@ public class TbvehiculosconductoresFacadeREST extends AbstractFacade<Tbvehiculos
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Tbvehiculosconductores entity) {
+    public Tbvehiculosconductores ingresar(Tbvehiculosconductores entity) {
+        Tbvehiculosconductores ojb = new Tbvehiculosconductores();
         super.create(entity);
+        em.flush();
+        ojb = entity;
+        return ojb;
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") PathSegment id, Tbvehiculosconductores entity) {
+    public Tbvehiculosconductores modificar(@PathParam("id") PathSegment id, Tbvehiculosconductores entity) {
+        Tbvehiculosconductores obj = new Tbvehiculosconductores();
         super.edit(entity);
+        em.flush();
+        obj=entity;
+        return obj;
     }
 
     @DELETE
