@@ -32,4 +32,6 @@ public interface TbusuariosentidadFacadeLocal {
     
     List<Tbusuariosentidad> buscarusuarioentidad(String cedula);
     
+    List<Tbusuariosentidad> totalusuarioentidad(String cedula);
+    
 }

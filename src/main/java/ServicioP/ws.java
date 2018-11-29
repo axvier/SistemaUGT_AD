@@ -299,4 +299,33 @@ public class ws {
         return result;
     }
     //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Terminar todas las asinaciones de rol-usuario-entidad con la fecha final">
+    @PUT
+    @Path("terminarallusuarioentidad/{cedula}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public List<Tbusuariosentidad> terminarUsuarioEntidad(@PathParam("cedula") String cedula) {
+        List<Tbusuariosentidad> result = new ArrayList<>();
+        for(Tbusuariosentidad userentity: usuarioentidadlocal.buscarusuarioentidad(cedula)){
+            Calendar today = Calendar.getInstance();
+            userentity.setFechafin(today.getTime());
+            usuarioentidadlocal.edit(userentity);
+            result.add(userentity);
+        }
+        return result;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Lista total de Usuario-entidad-rol x cedula">
+    @GET
+    @Path("totalusuarioentidadrol/{cedula}")
+    @Produces({"application/json;  charset=utf-8;  charset=utf-8"})
+    @Consumes({"application/json;  charset=utf-8;  charset=utf-8"})
+    public List<Tbusuariosentidad> totalusuarioentidadrol(@PathParam("cedula") String cedula) {
+        List<Tbusuariosentidad> userentidad = new ArrayList<>();
+        userentidad = usuarioentidadlocal.totalusuarioentidad(cedula);
+        return userentidad;
+    }
+    //</editor-fold>
 }

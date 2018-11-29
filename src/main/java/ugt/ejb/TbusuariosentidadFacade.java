@@ -37,6 +37,21 @@ public class TbusuariosentidadFacade extends AbstractFacade<Tbusuariosentidad> i
         Tbusuariosentidad result = new Tbusuariosentidad();
         String consulta;
         try {
+            consulta = "SELECT t FROM Tbusuariosentidad t WHERE t.tbusuariosentidadPK.cedulau = :cedulau AND t.fechafin IS NULL";
+            Query query = em.createQuery(consulta);
+            query.setParameter("cedulau", cedula);
+            listauserentidad = query.getResultList();
+        } catch (Exception e) {
+        }
+        return listauserentidad;
+    }
+
+    @Override
+    public List<Tbusuariosentidad> totalusuarioentidad(String cedula) {
+        List<Tbusuariosentidad> listauserentidad = null;
+        Tbusuariosentidad result = new Tbusuariosentidad();
+        String consulta;
+        try {
             consulta = "SELECT t FROM Tbusuariosentidad t WHERE t.tbusuariosentidadPK.cedulau = :cedulau";
             Query query = em.createQuery(consulta);
             query.setParameter("cedulau", cedula);
