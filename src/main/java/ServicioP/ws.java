@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -104,7 +105,7 @@ public class ws {
         List<Tbconductores> conductor = new ArrayList<>();
         if (conductorlocal.modconductor(tbconductor, cedula) > 0) {
             List<Tbvehiculosconductores> listaVehiculosCond = vehiculoconductorlocal.buscarxcedula(cedula);
-            for(Tbvehiculosconductores autoCond : listaVehiculosCond) {
+            for (Tbvehiculosconductores autoCond : listaVehiculosCond) {
                 Calendar today = Calendar.getInstance();
                 autoCond.setFechafin(today.getTime());
                 vehiculoconductorlocal.edit(autoCond);
@@ -271,7 +272,7 @@ public class ws {
         return result;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Lista de conductores diferente a un estado">
     @GET
     @Path("conductoresnoestado/{estado}")
@@ -299,7 +300,7 @@ public class ws {
         return result;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Terminar todas las asinaciones de rol-usuario-entidad con la fecha final">
     @PUT
     @Path("terminarallusuarioentidad/{cedula}")
@@ -307,7 +308,7 @@ public class ws {
     @Transactional
     public List<Tbusuariosentidad> terminarUsuarioEntidad(@PathParam("cedula") String cedula) {
         List<Tbusuariosentidad> result = new ArrayList<>();
-        for(Tbusuariosentidad userentity: usuarioentidadlocal.buscarusuarioentidad(cedula)){
+        for (Tbusuariosentidad userentity : usuarioentidadlocal.buscarusuarioentidad(cedula)) {
             Calendar today = Calendar.getInstance();
             userentity.setFechafin(today.getTime());
             usuarioentidadlocal.edit(userentity);
@@ -316,7 +317,7 @@ public class ws {
         return result;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Lista total de Usuario-entidad-rol x cedula">
     @GET
     @Path("totalusuarioentidadrol/{cedula}")
@@ -326,6 +327,44 @@ public class ws {
         List<Tbusuariosentidad> userentidad = new ArrayList<>();
         userentidad = usuarioentidadlocal.totalusuarioentidad(cedula);
         return userentidad;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="buscar en tbroles opcions con rol y con opcion">
+    @PUT
+    @Path("btbrolesopciones/{idrol}/{idopcion}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public Tbrolesopciones buscartbrolesopciones(@PathParam("idrol") String idrol, @PathParam("idopcion") String idopcion) {
+        Tbrolesopciones result = new Tbrolesopciones();
+        for (Tbrolesopciones search : rolesopcioneslocal.findAll()) {
+            if (search.getIdrol().getIdrol().equals(idrol) && search.getIdopcion().getIdopcion().equals(idopcion)) {
+                result = search;
+                break;
+            }
+        }
+        return result;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="eliminar las opcuiones anexadas a un rol">
+    @DELETE
+    @Path("deletetbrolesopciones/{idrol}")
+    @Transactional
+    public String deletetbrolesopciones(@PathParam("idrol") String idrol) {
+        String result = "";
+        for (Tbrolesopciones search : rolesopcioneslocal.findAll()) {
+            if (search.getIdrol().getIdrol().equals(idrol)) {
+                try {
+                    rolesopcioneslocal.remove(search);
+                    result="OK";
+                } catch (Exception e) {
+                    System.err.println("ERROR: " + e.getClass().getName() + "***" + e.getMessage());
+                    result = "KO";
+                }
+            }
+        }
+        return result;
     }
     //</editor-fold>
 }
