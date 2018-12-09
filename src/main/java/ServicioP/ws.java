@@ -43,6 +43,8 @@ public class ws {
     @EJB
     private TbrolesopcionesFacadeLocal rolesopcioneslocal;
     @EJB
+    private TbopcionesFacadeLocal opcioneslocal;
+    @EJB
     private TblicenciasFacadeLocal licenciaslocal;
 
     //<editor-fold defaultstate="collapsed" desc="Busqueda de marca segun el nombre">
@@ -351,7 +353,7 @@ public class ws {
     @DELETE
     @Path("deletetbrolesopciones/{idrol}")
     @Transactional
-    public String deletetbrolesopciones(@PathParam("idrol") String idrol) {
+    public String deletetbrolesopciones(@PathParam("idrol") int idrol) {
         String result = "";
         for (Tbrolesopciones search : rolesopcioneslocal.findAll()) {
             if (search.getIdrol().getIdrol().equals(idrol)) {
