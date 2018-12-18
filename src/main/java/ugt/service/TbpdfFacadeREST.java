@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -36,17 +37,28 @@ public class TbpdfFacadeREST extends AbstractFacade<Tbpdf> {
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Tbpdf entity) {
+    @Produces({MediaType.APPLICATION_JSON})
+    @Transactional
+    public Tbpdf ingresar(Tbpdf entity) {
+        Tbpdf obj = new Tbpdf();
         super.create(entity);
+        em.flush();
+        obj = entity;
+        return obj;
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Tbpdf entity) {
+    @Produces({MediaType.APPLICATION_JSON})
+    @Transactional
+    public Tbpdf modificar(@PathParam("id") Integer id, Tbpdf entity) {
+        Tbpdf obj = new Tbpdf();
         super.edit(entity);
+        em.flush();
+        obj = entity;
+        return obj;
     }
 
     @DELETE

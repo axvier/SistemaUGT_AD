@@ -8,6 +8,7 @@ package ServicioP;
 import ugt.ejb.*;
 import ugt.entidades.*;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,6 +47,8 @@ public class ws {
     private TbopcionesFacadeLocal opcioneslocal;
     @EJB
     private TblicenciasFacadeLocal licenciaslocal;
+    @EJB
+    private TbvehiculosdependenciasFacadeLocal vehiculosdependenciaslocal;
 
     //<editor-fold defaultstate="collapsed" desc="Busqueda de marca segun el nombre">
 //    @GET
@@ -215,7 +218,7 @@ public class ws {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Busqueda de Vehiculo Conductor por placa">
+    //<editor-fold defaultstate="collapsed" desc="Busqueda de Vehiculo Conductor por placa o cedula">
     @GET
     @Path("btbvehiculosconductores/{tipopk}/{pktb}")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
@@ -359,10 +362,54 @@ public class ws {
             if (search.getIdrol().getIdrol().equals(idrol)) {
                 try {
                     rolesopcioneslocal.remove(search);
-                    result="OK";
+                    result = "OK";
                 } catch (Exception e) {
                     System.err.println("ERROR: " + e.getClass().getName() + "***" + e.getMessage());
                     result = "KO";
+                }
+            }
+        }
+        return result;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Buscar un vehiculo dependencia con un ids">
+    @GET
+    @Path("vehiculosdependencias/{iddependencias}/{matricula}/{fechainicio}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    public Tbvehiculosdependencias vehiculosdependencias(@PathParam("iddependencias") int iddependencias, @PathParam("matricula") String matricula, @PathParam("fechainicio") String fechainicio) throws ParseException {
+        Tbvehiculosdependencias result = new Tbvehiculosdependencias();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date compare = sdf.parse(fechainicio);
+        for (Tbvehiculosdependencias vehiculodependencia : vehiculosdependenciaslocal.findAll()) {
+            if (vehiculodependencia.getTbvehiculosdependenciasPK().getFechainicio().equals(compare)
+                    && vehiculodependencia.getTbvehiculosdependenciasPK().getIddependencia() == iddependencias
+                    && vehiculodependencia.getTbvehiculosdependenciasPK().getMatricula().equals(matricula)) {
+                result = vehiculodependencia;
+            }
+        }
+        return result;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Busqueda de Vehiculo dependencia por placa o identidad">
+    @GET
+    @Path("btbvehiculosdependencias/{tipo}/{pktb}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public Tbvehiculosdependencias btbvehiculosdependencias(@PathParam("pktb") String pktb, @PathParam("tipo") String tipo) {
+        Tbvehiculosdependencias result = new Tbvehiculosdependencias();
+        for (Tbvehiculosdependencias vehiCond : vehiculosdependenciaslocal.findAll()) {
+            if (tipo.equals("matricula")) {
+                if (vehiCond.getTbvehiculosdependenciasPK().getMatricula().equals(pktb) && vehiCond.getFechafin() == null) {
+                    result = vehiCond;
+                }
+            }
+            if (tipo.equals("dependencia")) {
+                int compare;
+                compare = Integer.parseInt(pktb);
+                if (vehiCond.getTbvehiculosdependenciasPK().getIddependencia()== compare && vehiCond.getFechafin() == null) {
+                    result = vehiCond;
                 }
             }
         }
