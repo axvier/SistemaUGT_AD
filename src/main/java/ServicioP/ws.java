@@ -24,6 +24,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import ugt.solicitudes.Solicitudesfull;
+import ugt.solicitudes.SolicitudesfullLista;
 
 /**
  *
@@ -49,6 +51,10 @@ public class ws {
     private TblicenciasFacadeLocal licenciaslocal;
     @EJB
     private TbvehiculosdependenciasFacadeLocal vehiculosdependenciaslocal;
+    @EJB
+    private TbsolicitudesFacadeLocal solicitudeslocal;
+    @EJB
+    private TbseccionsolicitantesFacadeLocal solicitanteslocal;
 
     //<editor-fold defaultstate="collapsed" desc="Busqueda de marca segun el nombre">
 //    @GET
@@ -336,7 +342,7 @@ public class ws {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="buscar en tbroles opcions con rol y con opcion">
-    @PUT
+    @GET
     @Path("btbrolesopciones/{idrol}/{idopcion}")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
     @Transactional
@@ -408,12 +414,75 @@ public class ws {
             if (tipo.equals("dependencia")) {
                 int compare;
                 compare = Integer.parseInt(pktb);
-                if (vehiCond.getTbvehiculosdependenciasPK().getIddependencia()== compare && vehiCond.getFechafin() == null) {
+                if (vehiCond.getTbvehiculosdependenciasPK().getIddependencia() == compare && vehiCond.getFechafin() == null) {
                     result = vehiCond;
                 }
             }
         }
         return result;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="busqueda de solicitudes full por cedula solicitante">
+    @GET
+    @Path("bsolicitudesfullcedula/{cedula}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public SolicitudesfullLista bsolicitudesfullcedula(@PathParam("cedula") String cedula) {
+        SolicitudesfullLista res = new SolicitudesfullLista();
+        List<Solicitudesfull> result1 = new ArrayList<>();
+        for (Tbsolicitudes solcitud : solicitudeslocal.buscarallxcedula(cedula)) {
+            Solicitudesfull full = new Solicitudesfull();
+            full.setSolicitud(solcitud);// se ingresan las colecciones disponibles en la tabla solcitudes: solicitud, solicitante, motivo, viaje
+            if (solcitud.getTbseccionmotivoCollection().size() > 0) {
+                full.setMotivo((Tbseccionmotivo) solcitud.getTbseccionmotivoCollection().toArray()[0]);
+            }
+            if (solcitud.getTbseccionsolicitantesCollection().size() > 0) {
+                full.setSolicitante((Tbseccionsolicitantes) solcitud.getTbseccionsolicitantesCollection().toArray()[0]);
+            }
+            if (solcitud.getTbseccionviajesCollection().size() > 0) {
+                full.setViaje((Tbseccionviajes) solcitud.getTbseccionviajesCollection().toArray()[0]);
+            }
+            result1.add(full);
+        }
+        res.setLista(result1);
+        return res;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="busqueda de solicitudes full por id">
+    @GET
+    @Path("bsolicitudesfullid/{id}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public Solicitudesfull bsolicitudesfullid(@PathParam("id") int numero) {
+        Solicitudesfull full = new Solicitudesfull();
+        Tbsolicitudes solicitud = new Tbsolicitudes();
+        solicitud = solicitudeslocal.find(numero);
+        full.setSolicitud(solicitud);// se ingresan las colecciones disponibles en la tabla solcitudes: solicitud, solicitante, motivo, viaje
+        if (solicitud.getTbseccionmotivoCollection().size() > 0) {
+            full.setMotivo((Tbseccionmotivo) solicitud.getTbseccionmotivoCollection().toArray()[0]);
+        }
+        if (solicitud.getTbseccionsolicitantesCollection().size() > 0) {
+            full.setSolicitante((Tbseccionsolicitantes) solicitud.getTbseccionsolicitantesCollection().toArray()[0]);
+        }
+        if (solicitud.getTbseccionviajesCollection().size() > 0) {
+            full.setViaje((Tbseccionviajes) solicitud.getTbseccionviajesCollection().toArray()[0]);
+        }
+        return full;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Insertar las demas secciones de la solicitud">
+    @GET
+    @Path("insertsolicitudcomponentes")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Consumes({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public Solicitudesfull insertsolicitudcomponentes(Solicitudesfull solicitud) {
+        Solicitudesfull full = new Solicitudesfull();
+        
+        return full;
     }
     //</editor-fold>
 }

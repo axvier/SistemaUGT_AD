@@ -8,6 +8,7 @@ package ugt.ejb;
 import java.util.List;
 import javax.ejb.Local;
 import ugt.entidades.Tbsolicitudes;
+import ugt.solicitudes.Solicitudesfull;
 
 /**
  *
@@ -30,4 +31,5 @@ public interface TbsolicitudesFacadeLocal {
 
     int count();
     
+    List<Tbsolicitudes> buscarallxcedula(String cedula);
 }

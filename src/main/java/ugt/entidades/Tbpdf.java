@@ -5,6 +5,9 @@
  */
 package ugt.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -44,8 +47,6 @@ public class Tbpdf implements Serializable {
     private byte[] archivo;
     @OneToMany(mappedBy = "idpdf")
     private Collection<Tbordenesmovilizaciones> tbordenesmovilizacionesCollection;
-    @OneToMany(mappedBy = "idpdf")
-    private Collection<Tbsolicitudes> tbsolicitudesCollection;
 
     public Tbpdf() {
     }
@@ -77,15 +78,6 @@ public class Tbpdf implements Serializable {
 
     public void setTbordenesmovilizacionesCollection(Collection<Tbordenesmovilizaciones> tbordenesmovilizacionesCollection) {
         this.tbordenesmovilizacionesCollection = tbordenesmovilizacionesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Tbsolicitudes> getTbsolicitudesCollection() {
-        return tbsolicitudesCollection;
-    }
-
-    public void setTbsolicitudesCollection(Collection<Tbsolicitudes> tbsolicitudesCollection) {
-        this.tbsolicitudesCollection = tbsolicitudesCollection;
     }
 
     @Override

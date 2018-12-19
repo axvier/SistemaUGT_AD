@@ -52,7 +52,7 @@ public class Tbentidad implements Serializable {
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tbentidad")
     private Collection<Tbusuariosentidad> tbusuariosentidadCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "identidad")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tbentidad")
     private Collection<Tbvehiculosdependencias> tbvehiculosdependenciasCollection;
     @OneToMany(mappedBy = "idpadre")
     private Collection<Tbentidad> tbentidadCollection;

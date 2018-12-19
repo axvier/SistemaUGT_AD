@@ -5,9 +5,12 @@
  */
 package ugt.ejb;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import ugt.entidades.Tbseccionsolicitantes;
 
 /**
@@ -27,6 +30,20 @@ public class TbseccionsolicitantesFacade extends AbstractFacade<Tbseccionsolicit
 
     public TbseccionsolicitantesFacade() {
         super(Tbseccionsolicitantes.class);
+    }
+
+    @Override
+    public List<Tbseccionsolicitantes> buscarxcedula(String cedula) {
+        List<Tbseccionsolicitantes> result = new ArrayList<>();
+        String consulta;
+        try {
+            consulta = "SELECT c FROM Tbseccionsolicitantes c WHERE c.cedulau.cedula = :ced";
+            Query query = em.createQuery(consulta);
+            query.setParameter("ced", cedula);
+            result = query.getResultList();
+        } catch (Exception e) {
+        }
+        return result;
     }
     
 }

@@ -5,9 +5,11 @@
  */
 package ugt.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import ugt.entidades.Tbsolicitudes;
 
 /**
@@ -27,6 +29,20 @@ public class TbsolicitudesFacade extends AbstractFacade<Tbsolicitudes> implement
 
     public TbsolicitudesFacade() {
         super(Tbsolicitudes.class);
+    }
+
+    @Override
+    public List<Tbsolicitudes> buscarallxcedula(String cedula) {
+        List<Tbsolicitudes> result = null;
+        String consulta;
+        try {
+            consulta = "SELECT t.solicitud FROM Tbseccionsolicitantes t WHERE t.cedulau.cedula = :numero";
+            Query con = em.createQuery(consulta);
+            con.setParameter("numero", cedula);
+            result = con.getResultList();
+        } catch (Exception e) {
+        }
+        return result;
     }
     
 }
