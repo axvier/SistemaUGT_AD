@@ -45,5 +45,23 @@ public class TbseccionsolicitantesFacade extends AbstractFacade<Tbseccionsolicit
         }
         return result;
     }
+
+    @Override
+    public Tbseccionsolicitantes buscarxidsolicitud(String idsolicitud) {
+        Tbseccionsolicitantes result = new Tbseccionsolicitantes();
+        List<Tbseccionsolicitantes> lista = new ArrayList<>();
+        String consulta;
+        try {
+            consulta = "SELECT t FROM Tbseccionsolicitantes t WHERE t.solicitud.numero = :id";
+            Query con = em.createQuery(consulta);
+            con.setParameter("id", Integer.parseInt(idsolicitud));
+            lista = con.getResultList();
+            if(lista.size() > 0 && lista.size() < 2){
+                result = lista.get(0);
+            }
+        } catch (Exception e) {
+        }
+        return result;
+    }
     
 }

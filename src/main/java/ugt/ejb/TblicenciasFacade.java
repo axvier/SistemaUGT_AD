@@ -41,7 +41,7 @@ public class TblicenciasFacade extends AbstractFacade<Tblicencias> implements Tb
             query.setParameter(1, cedula);
             result = query.getResultList();
         } catch (Exception e) {
-}
+        }
         return result;
     }
 

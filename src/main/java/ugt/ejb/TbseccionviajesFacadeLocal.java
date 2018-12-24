@@ -29,5 +29,7 @@ public interface TbseccionviajesFacadeLocal {
     List<Tbseccionviajes> findRange(int[] range);
 
     int count();
+    //buscar por idsolicitud
+    Tbseccionviajes buscaridS(String idSolcitud);
     
 }

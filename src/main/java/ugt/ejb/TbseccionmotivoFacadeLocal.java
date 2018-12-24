@@ -30,4 +30,6 @@ public interface TbseccionmotivoFacadeLocal {
 
     int count();
     
+    //buscar motivo por id de solicitud
+    Tbseccionmotivo buscarXIDsolicitud(int id);
 }

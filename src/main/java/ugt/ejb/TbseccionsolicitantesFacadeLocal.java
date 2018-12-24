@@ -29,7 +29,9 @@ public interface TbseccionsolicitantesFacadeLocal {
     List<Tbseccionsolicitantes> findRange(int[] range);
 
     int count();
-    
+
     //Buscar en tabla solicitante un registro por cedula
     List<Tbseccionsolicitantes> buscarxcedula(String cedula);
+
+    Tbseccionsolicitantes buscarxidsolicitud(String idsolicitud);
 }

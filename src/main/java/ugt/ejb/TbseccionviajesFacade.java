@@ -8,6 +8,7 @@ package ugt.ejb;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import ugt.entidades.Tbseccionviajes;
 
 /**
@@ -27,6 +28,19 @@ public class TbseccionviajesFacade extends AbstractFacade<Tbseccionviajes> imple
 
     public TbseccionviajesFacade() {
         super(Tbseccionviajes.class);
+    }
+
+    @Override
+    public Tbseccionviajes buscaridS(String idSolcitud) {
+        Tbseccionviajes result = new Tbseccionviajes();
+        try {
+            String cosulta = "SELECT t FROM Tbseccionviajes t WHERE t.solicitud.numero = :idsol";
+            Query query = em. createQuery(cosulta);
+            query.setParameter("idsol", Integer.parseInt(idSolcitud));
+            result = (Tbseccionviajes) query.getParameter(1);
+        } catch (Exception e) {
+        }
+        return result;
     }
     
 }

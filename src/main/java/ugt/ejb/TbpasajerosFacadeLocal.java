@@ -29,5 +29,6 @@ public interface TbpasajerosFacadeLocal {
     List<Tbpasajeros> findRange(int[] range);
 
     int count();
-    
+    //buscar pasajeros por idviaje
+    List<Tbpasajeros> buscarXIDviaje(Integer id);
 }

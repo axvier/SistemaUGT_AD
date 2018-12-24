@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class SolicitudesfullLista {
 
-    private List<Solicitudesfull> lista = new ArrayList<>();
+    private List<Solicitudesfull> lista;
 
     public List<Solicitudesfull> getLista() {
         return lista;
