@@ -7,7 +7,6 @@ package ServicioP;
 
 import ugt.ejb.*;
 import ugt.entidades.*;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,8 +48,6 @@ public class ws {
     @EJB
     private TbrolesopcionesFacadeLocal rolesopcioneslocal;
     @EJB
-    private TbopcionesFacadeLocal opcioneslocal;
-    @EJB
     private TblicenciasFacadeLocal licenciaslocal;
     @EJB
     private TbvehiculosdependenciasFacadeLocal vehiculosdependenciaslocal;
@@ -64,6 +61,8 @@ public class ws {
     private TbseccionviajesFacadeLocal viajelocal;
     @EJB
     private TbpasajerosFacadeLocal pasajeroslocal;
+    @EJB
+    private TbviajepasajeroFacadeLocal viajepasajerolocal;
 
     //<editor-fold defaultstate="collapsed" desc="Busqueda de marca segun el nombre">
 //    @GET
@@ -460,25 +459,28 @@ public class ws {
                     full.setSolicitante(solicitanteAux);
                 }
             }
-            if (solcitud.getTbseccionviajesCollection().size() > 0) {// conseguir viaje
+            if (solcitud.getTbseccionviajesCollection().size() > 0) {//conseguir viaje
                 full.setViaje((Tbseccionviajes) solcitud.getTbseccionviajesCollection().toArray()[0]);
-                if (full.getViaje().getTbpasajerosCollection().size() > 0) {//conseguir pasajeros
-                    List<Tbpasajeros> pasajeroList = new ArrayList<>();
-                    for (Tbpasajeros aux : full.getViaje().getTbpasajerosCollection()) {
-                        pasajeroList.add(aux);
-                    }
-                    if (pasajeroList.size() > 0) {
-                        full.setPasajeros(pasajeroList);
-                    }
-                }
             } else {
                 Tbseccionviajes viajeAux = new Tbseccionviajes();
-                viajeAux = viajelocal.buscaridS(solcitud.getNumero().toString());
-                if (viajeAux.getIdviaje() != null) {//conseguir pasajeros
-                    full.setViaje(viajeAux);
-                    List<Tbpasajeros> pasajeroList = pasajeroslocal.buscarXIDviaje(solcitud.getNumero());
-                    if (pasajeroList.size() > 0) {
-                        full.setPasajeros(pasajeroList);
+                viajeAux = viajelocal.buscaridS(solcitud.getNumero().toString()); // buscar seccion viaje con id de solicitud
+                if (viajeAux.getIdviaje() != null) {
+                    full.setViaje(viajeAux);//set seccion viaje en solicitud completa
+                }
+            }
+            if (full.getViaje() != null) {
+                if (full.getViaje().getTbviajepasajeroCollection().size() > 0) {//conseguir pasajeros
+                    List<Tbviajepasajero> viajepasajeroList = new ArrayList<>();
+                    for (Tbviajepasajero aux : full.getViaje().getTbviajepasajeroCollection()) {
+                        viajepasajeroList.add(aux);
+                    }
+                    if (viajepasajeroList.size() > 0) {
+                        full.setPasajeros(viajepasajeroList);
+                    }
+                } else {
+                    List<Tbviajepasajero> viajepasajeroList = viajepasajerolocal.buscarXIDviaje(full.getViaje().getIdviaje()); // lista de pasajeros de la tabla tbviajepasajero segun idviaje
+                    if (viajepasajeroList.size() > 0) {
+                        full.setPasajeros(viajepasajeroList);
                     }
                 }
             }
@@ -521,23 +523,26 @@ public class ws {
             }
             if (solicitud.getTbseccionviajesCollection().size() > 0) {//conseguir viaje
                 full.setViaje((Tbseccionviajes) solicitud.getTbseccionviajesCollection().toArray()[0]);
-                if (full.getViaje().getTbpasajerosCollection().size() > 0) {//conseguir pasajeros
-                    List<Tbpasajeros> pasajeroList = new ArrayList<>();
-                    for (Tbpasajeros aux : full.getViaje().getTbpasajerosCollection()) {
-                        pasajeroList.add(aux);
-                    }
-                    if (pasajeroList.size() > 0) {
-                        full.setPasajeros(pasajeroList);
-                    }
-                }
             } else {
                 Tbseccionviajes viajeAux = new Tbseccionviajes();
-                viajeAux = viajelocal.buscaridS(solicitud.getNumero().toString());
-                if (viajeAux.getIdviaje() != null) {//conseguir pasajeros
-                    full.setViaje(viajeAux);
-                    List<Tbpasajeros> pasajeroList = pasajeroslocal.buscarXIDviaje(solicitud.getNumero());
-                    if (pasajeroList.size() > 0) {
-                        full.setPasajeros(pasajeroList);
+                viajeAux = viajelocal.buscaridS(solicitud.getNumero().toString()); // buscar seccion viaje con id de solicitud
+                if (viajeAux.getIdviaje() != null) {
+                    full.setViaje(viajeAux);//set seccion viaje en solicitud completa
+                }
+            }
+            if (full.getViaje() != null) {
+                if (full.getViaje().getTbviajepasajeroCollection().size() > 0) {//conseguir pasajeros
+                    List<Tbviajepasajero> viajepasajeroList = new ArrayList<>();
+                    for (Tbviajepasajero aux : full.getViaje().getTbviajepasajeroCollection()) {
+                        viajepasajeroList.add(aux);
+                    }
+                    if (viajepasajeroList.size() > 0) {
+                        full.setPasajeros(viajepasajeroList);
+                    }
+                } else {
+                    List<Tbviajepasajero> viajepasajeroList = viajepasajerolocal.buscarXIDviaje(full.getViaje().getIdviaje()); // lista de pasajeros de la tabla tbviajepasajero segun idviaje
+                    if (viajepasajeroList.size() > 0) {
+                        full.setPasajeros(viajepasajeroList);
                     }
                 }
             }
@@ -549,8 +554,8 @@ public class ws {
     //<editor-fold defaultstate="collapsed" desc="Insertar las demas secciones de la solicitud">
     @POST
     @Path("insertsolicitudcomponentes")
-    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
-    @Consumes({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Produces({"application/json; charset=utf-8"})
+    @Consumes({"application/json; charset=ISO-8859-1;  charset=utf-8"})
     @Transactional
     public Solicitudesfull insertsolicitudcomponentes(Solicitudesfull solicitudfull) {
         Solicitudesfull result = new Solicitudesfull();
@@ -575,53 +580,59 @@ public class ws {
 //        inicio insertar viaje
             if (solicitudfull.getViaje() != null) {
                 //insertar soliciutd en clase viaje
+//                Tbseccionviajes viajeAux = solicitudfull.getViaje();
+//                viajeAux.setSolicitud(solicitudfull.getSolicitud());
                 solicitudfull.getViaje().setSolicitud(solicitudfull.getSolicitud());
                 //insertar viaje con EJB
                 viajelocal.create(solicitudfull.getViaje());
                 //set datos viaje con id de solicitud
 //                solicitudfull.setViaje(viajelocal.buscaridS(solicitudfull.getSolicitud().getNumero().toString()));
-//          inicio insertar Pasajeros
-                if (solicitudfull.getPasajeros().size() > 0 && solicitudfull.getViaje().getIdviaje() != null) {
-                    for (Tbpasajeros pasajero : solicitudfull.getPasajeros()) {
-                        //insertar viaje en la clase pasajeros
-                        pasajero.setIdviaje(solicitudfull.getViaje());
-                        //insertar pasajeros con EJB
-                        pasajeroslocal.create(pasajero);
-                    }
-                }
-//          fin insertar Pasajeros
             }
 //        fin insertar viaje
-//      buscar datos de solicitud ingresada
-//            Tbsolicitudes aux = solicitudeslocal.find(solicitudfull.getSolicitud().getNumero());
-//            //set datos de soliciutd ingresada  
-//            result.setSolicitud(aux);
-//            //set datos motivo
-//            if (aux.getTbseccionmotivoCollection().size() > 0) {
-//                result.setMotivo((Tbseccionmotivo) aux.getTbseccionmotivoCollection().toArray()[0]);
-//            }
-//            //set datos solicitante
-//            if (aux.getTbseccionsolicitantesCollection().size() > 0) {
-//                result.setSolicitante((Tbseccionsolicitantes) aux.getTbseccionsolicitantesCollection().toArray()[0]);
-//            }
-//            //set datos viaje
-//            if (aux.getTbseccionviajesCollection().size() > 0) {
-//                result.setViaje((Tbseccionviajes) aux.getTbseccionviajesCollection().toArray()[0]);
-//                //mapear collection de pasajeros dentro de viaje seteado
-//                List<Tbpasajeros> pasajeroList = new ArrayList<>();
-//                for (Tbpasajeros pasAux : result.getViaje().getTbpasajerosCollection()) {
-//                    //ingreso de collection pasajeros a lista de pasajeros
-//                    pasajeroList.add(pasAux);
-//                }
-//                if (pasajeroList.size() > 0) {
-//                    result.setPasajeros(pasajeroList);
-//                }
-//            }
+//          inicio insertar Pasajeros
+            if (solicitudfull.getPasajeros().size() > 0) {
+                for (Tbviajepasajero viajePasajero : solicitudfull.getPasajeros()) {
+                    if (viajePasajero.getTbpasajeros() != null) {
+                        Tbpasajeros pasajeroAux = viajePasajero.getTbpasajeros();
+                        Tbpasajeros existe = pasajeroslocal.find(pasajeroAux.getCedula()); //ver si el pasajero existe
+                        if (existe == null) {
+                            //insertar pasajeros con EJB, una vez insertado
+                            pasajeroslocal.create(pasajeroAux);
+                        }
+                    }
+                }
+            }
+//          fin insertar Pasajeros
+//            inicio insertar viaje pasajeros
+            if (solicitudfull.getViaje().getIdviaje() != null) {
+                if (solicitudfull.getViaje().getIdviaje() != 0) { // ver si se inserto en la persistencia
+                    for (Tbviajepasajero viajePasajeroAux : solicitudfull.getPasajeros()) { // listar a los pasajeros uno a uno
+                        viajePasajeroAux.setTbseccionviajes(solicitudfull.getViaje());// insertar los datos del viaje en los pasajeros
+                        try {
+                            viajepasajerolocal.create(viajePasajeroAux); // crear nuevo viaje pasajero
+                        } catch (Exception e) {
+                            Logger.getAnonymousLogger().log(Level.SEVERE, "problemas en insertar viaje pasajero ", e.getClass().getName() + "****" + e.getMessage());
+                            System.err.println("ERROR: " + e.getClass().getName() + "***" + e.getMessage());
+                        }
+                    }
+                }
+            }
             result = solicitudfull;
         } catch (Exception e) {
             Logger.getAnonymousLogger().log(Level.SEVERE, "problemas en insrtar los componentes del PDF ", e.getClass().getName() + "****" + e.getMessage());
             System.err.println("ERROR: " + e.getClass().getName() + "***" + e.getMessage());
         }
+        return result;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Buscar termino en id cedula dentro de tbpasajeros">
+    @GET
+    @Path("termpasajero/{term}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    public List<Tbpasajeros> termpasajero(@PathParam("term") String term) {
+        List<Tbpasajeros> result = new ArrayList<>();
+        result = pasajeroslocal.buscarXtermpasajero(term);
         return result;
     }
     //</editor-fold>

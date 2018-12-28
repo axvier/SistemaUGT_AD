@@ -34,4 +34,6 @@ public interface TbseccionsolicitantesFacadeLocal {
     List<Tbseccionsolicitantes> buscarxcedula(String cedula);
 
     Tbseccionsolicitantes buscarxidsolicitud(String idsolicitud);
+    //crear nuevo
+    Tbseccionsolicitantes insertar(Tbseccionsolicitantes tbsolicitante);
 }

@@ -31,4 +31,6 @@ public interface TbpasajerosFacadeLocal {
     int count();
     //buscar pasajeros por idviaje
     List<Tbpasajeros> buscarXIDviaje(Integer id);
+    //buscar pasajeros por termino en cedula
+    List<Tbpasajeros> buscarXtermpasajero(String term);
 }

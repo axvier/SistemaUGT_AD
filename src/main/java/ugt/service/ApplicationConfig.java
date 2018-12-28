@@ -54,6 +54,7 @@ public class ApplicationConfig extends Application {
         resources.add(ugt.service.TbvehiculosFacadeREST.class);
         resources.add(ugt.service.TbvehiculosconductoresFacadeREST.class);
         resources.add(ugt.service.TbvehiculosdependenciasFacadeREST.class);
+        resources.add(ugt.service.TbviajepasajeroFacadeREST.class);
         
     }
     

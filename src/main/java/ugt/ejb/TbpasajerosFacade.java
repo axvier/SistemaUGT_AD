@@ -45,5 +45,19 @@ public class TbpasajerosFacade extends AbstractFacade<Tbpasajeros> implements Tb
         }
         return lista;
     }
+
+    @Override
+    public List<Tbpasajeros> buscarXtermpasajero(String term) {
+        List<Tbpasajeros> lista = new ArrayList<>();
+        String consulta;
+        try {
+            consulta = "SELECT t FROM Tbpasajeros t WHERE t.cedula LIKE CONCAT('%',:term,'%')";
+            Query con = em.createQuery(consulta);
+            con.setParameter("term", term);
+            lista = con.getResultList();
+        } catch (Exception e) {
+        }
+        return lista;
+    }
     
 }

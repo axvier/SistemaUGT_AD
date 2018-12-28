@@ -7,6 +7,8 @@ package ugt.ejb;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -56,12 +58,26 @@ public class TbseccionsolicitantesFacade extends AbstractFacade<Tbseccionsolicit
             Query con = em.createQuery(consulta);
             con.setParameter("id", Integer.parseInt(idsolicitud));
             lista = con.getResultList();
-            if(lista.size() > 0 && lista.size() < 2){
+            if (lista.size() > 0 && lista.size() < 2) {
                 result = lista.get(0);
             }
         } catch (Exception e) {
         }
         return result;
     }
-    
+
+    @Override
+    public Tbseccionsolicitantes insertar(Tbseccionsolicitantes tbsolicitante) {
+        Tbseccionsolicitantes result = new Tbseccionsolicitantes();
+        try {
+            super.create(tbsolicitante);
+            em.flush();
+            result = tbsolicitante;
+        } catch (Exception e) {
+            Logger.getAnonymousLogger().log(Level.SEVERE, "problemas en insertar la seccion solicitante EJB con FacadeRest ", e.getClass().getName() + "****" + e.getMessage());
+            System.err.println("ERROR: " + e.getClass().getName() + "***" + e.getMessage());
+        }
+        return result;
+    }
+
 }
