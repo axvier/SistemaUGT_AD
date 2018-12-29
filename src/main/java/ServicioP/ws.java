@@ -636,4 +636,15 @@ public class ws {
         return result;
     }
     //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Busqueda de Usuario-entidad-rol por cedula y rol">
+    @GET
+    @Path("bentidadusuario/{cedula}/{rol}")
+    @Produces({"application/json;  charset=utf-8;  charset=utf-8"})
+    public Tbusuariosentidad bentidadusuario(@PathParam("cedula") String cedula,@PathParam("rol") String idrol) {
+        Tbusuariosentidad userentidad = new Tbusuariosentidad();
+        userentidad = usuarioentidadlocal.bentidadusuario(cedula,idrol);
+        return userentidad;
+    }
+    //</editor-fold>
 }
