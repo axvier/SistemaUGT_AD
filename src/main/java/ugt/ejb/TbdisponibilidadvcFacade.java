@@ -5,9 +5,12 @@
  */
 package ugt.ejb;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import ugt.entidades.Tbdisponibilidadvc;
 
 /**
@@ -28,5 +31,19 @@ public class TbdisponibilidadvcFacade extends AbstractFacade<Tbdisponibilidadvc>
     public TbdisponibilidadvcFacade() {
         super(Tbdisponibilidadvc.class);
     }
-    
+
+    @Override
+    public Tbdisponibilidadvc buscarXSol(String idsol) {
+        Tbdisponibilidadvc result = new Tbdisponibilidadvc();
+        String consulta;
+        try {
+            consulta = "SELECT t FROM Tbdisponibilidadvc t WHERE t.solicitud.numero = :id";
+            Query con = em.createQuery(consulta);
+            con.setParameter("id", Integer.parseInt(idsol));
+            result = (Tbdisponibilidadvc) con.getParameterValue(1);
+        } catch (NumberFormatException e) {
+        }
+        return result;
+    }
+
 }

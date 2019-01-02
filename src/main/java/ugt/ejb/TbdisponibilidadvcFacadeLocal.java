@@ -29,5 +29,7 @@ public interface TbdisponibilidadvcFacadeLocal {
     List<Tbdisponibilidadvc> findRange(int[] range);
 
     int count();
+    //buscar por solicitud
+    Tbdisponibilidadvc buscarXSol(String idsol);
     
 }
