@@ -5,6 +5,8 @@
  */
 package ugt.ejb;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -33,11 +35,15 @@ public class TbseccionviajesFacade extends AbstractFacade<Tbseccionviajes> imple
     @Override
     public Tbseccionviajes buscaridS(String idSolcitud) {
         Tbseccionviajes result = new Tbseccionviajes();
+        List<Tbseccionviajes> listaAux = new ArrayList<>();
         try {
             String cosulta = "SELECT t FROM Tbseccionviajes t WHERE t.solicitud.numero = :idsol";
             Query query = em. createQuery(cosulta);
             query.setParameter("idsol", Integer.parseInt(idSolcitud));
-            result = (Tbseccionviajes) query.getParameter(1);
+            listaAux = query.getResultList();
+            if(listaAux.size() > 0 && listaAux.size()<2){
+                result = listaAux.get(0);
+            }
         } catch (Exception e) {
         }
         return result;

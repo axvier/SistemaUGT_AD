@@ -63,6 +63,8 @@ public class ws {
     private TbpasajerosFacadeLocal pasajeroslocal;
     @EJB
     private TbviajepasajeroFacadeLocal viajepasajerolocal;
+    @EJB
+    private TbdisponibilidadvcFacadeLocal disponibilidadvclocal;
 
     //<editor-fold defaultstate="collapsed" desc="Busqueda de marca segun el nombre">
 //    @GET
@@ -645,6 +647,17 @@ public class ws {
         Tbusuariosentidad userentidad = new Tbusuariosentidad();
         userentidad = usuarioentidadlocal.bentidadusuario(cedula,idrol);
         return userentidad;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Buscar disponibilidad vehiculo conductor con solicitud">
+    @GET
+    @Path("bbdisponibilidadvcsol/{id}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    public Tbdisponibilidadvc bbdisponibilidadvcsol(@PathParam("id") String idsolicitud) {
+        Tbdisponibilidadvc result = new Tbdisponibilidadvc();
+        result = disponibilidadvclocal.buscarXSol(idsolicitud);
+        return result;
     }
     //</editor-fold>
 }

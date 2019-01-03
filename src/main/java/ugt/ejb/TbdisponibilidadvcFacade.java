@@ -35,12 +35,16 @@ public class TbdisponibilidadvcFacade extends AbstractFacade<Tbdisponibilidadvc>
     @Override
     public Tbdisponibilidadvc buscarXSol(String idsol) {
         Tbdisponibilidadvc result = new Tbdisponibilidadvc();
+        List<Tbdisponibilidadvc> listAux = new ArrayList<>();
         String consulta;
         try {
             consulta = "SELECT t FROM Tbdisponibilidadvc t WHERE t.solicitud.numero = :id";
             Query con = em.createQuery(consulta);
             con.setParameter("id", Integer.parseInt(idsol));
-            result = (Tbdisponibilidadvc) con.getParameterValue(1);
+            listAux = con.getResultList();
+            if(listAux.size() > 0 && listAux.size()<2){
+                result = listAux.get(0);
+            }
         } catch (NumberFormatException e) {
         }
         return result;
