@@ -35,4 +35,6 @@ public interface TbusuariosentidadFacadeLocal {
     List<Tbusuariosentidad> totalusuarioentidad(String cedula);
     
     Tbusuariosentidad bentidadusuario(String cedula, String idrol);
+    
+    Tbusuariosentidad bentidadusuarioopc(String cedula, int charrol);
 }

@@ -32,4 +32,6 @@ public interface TbsolicitudesFacadeLocal {
     int count();
     
     List<Tbsolicitudes> buscarallxcedula(String cedula);
+    
+    List<Tbsolicitudes> filtrarXestado(String estado);
 }

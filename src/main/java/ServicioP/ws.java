@@ -650,6 +650,17 @@ public class ws {
     }
     //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Busqueda de Usuario-entidad-rol por cedula y charrol">
+    @GET
+    @Path("bentidadusuarioopc/{cedula}/{rol}")
+    @Produces({"application/json;  charset=utf-8;  charset=utf-8"})
+    public Tbusuariosentidad bentidadusuarioopc(@PathParam("cedula") String cedula,@PathParam("rol") Integer idopcion) {
+        Tbusuariosentidad userentidad = new Tbusuariosentidad();
+        userentidad = usuarioentidadlocal.bentidadusuarioopc(cedula,idopcion);
+        return userentidad;
+    }
+    //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Buscar disponibilidad vehiculo conductor con solicitud">
     @GET
     @Path("bbdisponibilidadvcsol/{id}")
@@ -657,6 +668,64 @@ public class ws {
     public Tbdisponibilidadvc bbdisponibilidadvcsol(@PathParam("id") String idsolicitud) {
         Tbdisponibilidadvc result = new Tbdisponibilidadvc();
         result = disponibilidadvclocal.buscarXSol(idsolicitud);
+        return result;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="busqueda de solicitudes full por cedula solicitante">
+    @GET
+    @Path("bsolicitudesfullestado/{estado}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public List<Solicitudesfull> bsolicitudesfullestado(@PathParam("estado") String estado) {
+        List<Solicitudesfull> result = new ArrayList<>();
+        for (Tbsolicitudes solcitud : solicitudeslocal.filtrarXestado(estado)) {
+            Solicitudesfull full = new Solicitudesfull();
+            full.setSolicitud(solcitud);// se ingresan las colecciones disponibles en la tabla solcitudes: solicitud, solicitante, motivo, viaje
+            if (solcitud.getTbseccionmotivoCollection().size() > 0) {//conseguir motivo
+                full.setMotivo((Tbseccionmotivo) solcitud.getTbseccionmotivoCollection().toArray()[0]);
+            } else {
+                Tbseccionmotivo motivoAux = motivolocal.buscarXIDsolicitud(solcitud.getNumero());
+                if (motivoAux.getIdmotivo() != null) {
+                    full.setMotivo(motivoAux);
+                }
+            }
+            if (solcitud.getTbseccionsolicitantesCollection().size() > 0) {// congeguir solicitante
+                full.setSolicitante((Tbseccionsolicitantes) solcitud.getTbseccionsolicitantesCollection().toArray()[0]);
+            } else {
+                Tbseccionsolicitantes solicitanteAux = new Tbseccionsolicitantes();
+                solicitanteAux = solicitanteslocal.buscarxidsolicitud(solcitud.getNumero().toString());
+                if (solicitanteAux.getIdsolicitante() != null) {
+                    full.setSolicitante(solicitanteAux);
+                }
+            }
+            if (solcitud.getTbseccionviajesCollection().size() > 0) {//conseguir viaje
+                full.setViaje((Tbseccionviajes) solcitud.getTbseccionviajesCollection().toArray()[0]);
+            } else {
+                Tbseccionviajes viajeAux = new Tbseccionviajes();
+                viajeAux = viajelocal.buscaridS(solcitud.getNumero().toString()); // buscar seccion viaje con id de solicitud
+                if (viajeAux.getIdviaje() != null) {
+                    full.setViaje(viajeAux);//set seccion viaje en solicitud completa
+                }
+            }
+            if (full.getViaje() != null) {
+                if (full.getViaje().getTbviajepasajeroCollection().size() > 0) {//conseguir pasajeros
+                    List<Tbviajepasajero> viajepasajeroList = new ArrayList<>();
+                    for (Tbviajepasajero aux : full.getViaje().getTbviajepasajeroCollection()) {
+                        viajepasajeroList.add(aux);
+                    }
+                    if (viajepasajeroList.size() > 0) {
+                        full.setPasajeros(viajepasajeroList);
+                    }
+                } else {
+                    List<Tbviajepasajero> viajepasajeroList = viajepasajerolocal.buscarXIDviaje(full.getViaje().getIdviaje()); // lista de pasajeros de la tabla tbviajepasajero segun idviaje
+                    if (viajepasajeroList.size() > 0) {
+                        full.setPasajeros(viajepasajeroList);
+                    }
+                }
+            }
+            result.add(full);
+        }
         return result;
     }
     //</editor-fold>

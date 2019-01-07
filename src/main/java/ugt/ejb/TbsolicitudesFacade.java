@@ -44,5 +44,19 @@ public class TbsolicitudesFacade extends AbstractFacade<Tbsolicitudes> implement
         }
         return result;
     }
+
+    @Override
+    public List<Tbsolicitudes> filtrarXestado(String estado) {
+        List<Tbsolicitudes> result = null;
+        String consulta;
+        try {
+            consulta = "SELECT t FROM Tbsolicitudes t WHERE t.estado = :estado";
+            Query con = em.createQuery(consulta);
+            con.setParameter("estado", estado);
+            result = con.getResultList();
+        } catch (Exception e) {
+        }
+        return result;
+    }
     
 }
