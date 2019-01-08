@@ -729,4 +729,24 @@ public class ws {
         return result;
     }
     //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Buscar vehiculos disponibles con fecha entrada y salida">
+    @GET
+    @Path("bvehiculosconductoresinner")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    public List<Tbvehiculosconductores> bvehiculosdisponibilidad() {
+        List<Tbvehiculosconductores> lista = new ArrayList<>();
+        for (Tbvehiculos en : vehiculolocal.findAll()) {
+            Tbvehiculosconductores auxV_C = vehiculoconductorlocal.buscarxplaca(en.getPlaca());
+            if(auxV_C.getTbconductores() != null){
+                lista.add(auxV_C);
+            }else{
+                Tbvehiculosconductores auxNuevo = new Tbvehiculosconductores();
+                auxNuevo.setTbvehiculos(en);
+                lista.add(auxNuevo);
+            }
+        }
+        return lista;
+    }
+    //</editor-fold>
 }

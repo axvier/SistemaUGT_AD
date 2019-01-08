@@ -86,4 +86,17 @@ public class TbvehiculosconductoresFacade extends AbstractFacade<Tbvehiculoscond
         return result;
     }
 
+    @Override
+    public List<Tbvehiculosconductores> findALLFechFinNull() {
+        List<Tbvehiculosconductores> listavehiculo = null;
+        String consulta;
+        try {
+            consulta = "SELECT t FROM Tbvehiculosconductores t WHERE t.fechafin is null";
+            Query con = em.createQuery(consulta);
+            listavehiculo = con.getResultList();
+        } catch (Exception e) {
+        }
+        return listavehiculo;
+    }
+
 }

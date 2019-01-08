@@ -37,4 +37,6 @@ public interface TbvehiculosconductoresFacadeLocal {
     Tbvehiculosconductores buscarxplaca(String placa);
     
     Tbvehiculosconductores modificar(String cedula,String placa, String fecha, Tbvehiculosconductores objeto);
+    
+    List<Tbvehiculosconductores> findALLFechFinNull();
 }
