@@ -32,4 +32,6 @@ public interface TbdisponibilidadvcFacadeLocal {
     //buscar por solicitud
     Tbdisponibilidadvc buscarXSol(String idsol);
     
+   List<Tbdisponibilidadvc> buscarXPlaca(String placa);
+    
 }

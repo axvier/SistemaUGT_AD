@@ -50,4 +50,18 @@ public class TbdisponibilidadvcFacade extends AbstractFacade<Tbdisponibilidadvc>
         return result;
     }
 
+    @Override
+    public List<Tbdisponibilidadvc> buscarXPlaca(String placa) {
+        List<Tbdisponibilidadvc> result = new ArrayList<>();
+        String consulta;
+        try {
+            consulta = "SELECT t FROM Tbdisponibilidadvc t WHERE t.matricula.placa = :placa";
+            Query con = em.createQuery(consulta);
+            con.setParameter("placa", placa);
+            result = con.getResultList();
+        } catch (NumberFormatException e) {
+        }
+        return result;
+    }
+
 }

@@ -26,6 +26,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import ugt.solicitudes.EventoAgenda;
 import ugt.solicitudes.Solicitudesfull;
 import ugt.solicitudes.SolicitudesfullLista;
 
@@ -65,6 +66,8 @@ public class ws {
     private TbviajepasajeroFacadeLocal viajepasajerolocal;
     @EJB
     private TbdisponibilidadvcFacadeLocal disponibilidadvclocal;
+    @EJB
+    private TbentidadFacadeLocal entidadlocal;
 
     //<editor-fold defaultstate="collapsed" desc="Busqueda de marca segun el nombre">
 //    @GET
@@ -415,17 +418,28 @@ public class ws {
     @Transactional
     public Tbvehiculosdependencias btbvehiculosdependencias(@PathParam("pktb") String pktb, @PathParam("tipo") String tipo) {
         Tbvehiculosdependencias result = new Tbvehiculosdependencias();
+        Tbentidad entidad = null;
+        if (tipo.equals("dependencia")) {
+            entidad = entidadlocal.find(Integer.parseInt(pktb));
+        }
         for (Tbvehiculosdependencias vehiCond : vehiculosdependenciaslocal.findAll()) {
             if (tipo.equals("matricula")) {
                 if (vehiCond.getTbvehiculosdependenciasPK().getMatricula().equals(pktb) && vehiCond.getFechafin() == null) {
                     result = vehiCond;
+                    break;
                 }
             }
             if (tipo.equals("dependencia")) {
-                int compare;
-                compare = Integer.parseInt(pktb);
-                if (vehiCond.getTbvehiculosdependenciasPK().getIddependencia() == compare && vehiCond.getFechafin() == null) {
-                    result = vehiCond;
+                if (entidad != null) {
+                    Tbentidad aux = entidad;
+                    while (aux.getIdpadre() != null && aux.getIdtipo().getIdtipo() != 1) {
+                        if (vehiCond.getTbvehiculosdependenciasPK().getIddependencia() == aux.getIdentidad() && vehiCond.getFechafin() == null) {
+                            result = vehiCond;
+                            break;
+                        }
+                        aux = aux.getIdpadre();
+                    }
+
                 }
             }
         }
@@ -638,29 +652,29 @@ public class ws {
         return result;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Busqueda de Usuario-entidad-rol por cedula y rol">
     @GET
     @Path("bentidadusuario/{cedula}/{rol}")
     @Produces({"application/json;  charset=utf-8;  charset=utf-8"})
-    public Tbusuariosentidad bentidadusuario(@PathParam("cedula") String cedula,@PathParam("rol") String idrol) {
+    public Tbusuariosentidad bentidadusuario(@PathParam("cedula") String cedula, @PathParam("rol") String idrol) {
         Tbusuariosentidad userentidad = new Tbusuariosentidad();
-        userentidad = usuarioentidadlocal.bentidadusuario(cedula,idrol);
+        userentidad = usuarioentidadlocal.bentidadusuario(cedula, idrol);
         return userentidad;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Busqueda de Usuario-entidad-rol por cedula y charrol">
     @GET
     @Path("bentidadusuarioopc/{cedula}/{rol}")
     @Produces({"application/json;  charset=utf-8;  charset=utf-8"})
-    public Tbusuariosentidad bentidadusuarioopc(@PathParam("cedula") String cedula,@PathParam("rol") Integer idopcion) {
+    public Tbusuariosentidad bentidadusuarioopc(@PathParam("cedula") String cedula, @PathParam("rol") Integer idopcion) {
         Tbusuariosentidad userentidad = new Tbusuariosentidad();
-        userentidad = usuarioentidadlocal.bentidadusuarioopc(cedula,idopcion);
+        userentidad = usuarioentidadlocal.bentidadusuarioopc(cedula, idopcion);
         return userentidad;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Buscar disponibilidad vehiculo conductor con solicitud">
     @GET
     @Path("bbdisponibilidadvcsol/{id}")
@@ -671,7 +685,7 @@ public class ws {
         return result;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="busqueda de solicitudes full por cedula solicitante">
     @GET
     @Path("bsolicitudesfullestado/{estado}")
@@ -729,8 +743,8 @@ public class ws {
         return result;
     }
     //</editor-fold>
-    
-    //<editor-fold defaultstate="collapsed" desc="Buscar vehiculos disponibles con fecha entrada y salida">
+
+    //<editor-fold defaultstate="collapsed" desc="Buscar vehiculos con o sin conductor">
     @GET
     @Path("bvehiculosconductoresinner")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
@@ -738,12 +752,53 @@ public class ws {
         List<Tbvehiculosconductores> lista = new ArrayList<>();
         for (Tbvehiculos en : vehiculolocal.findAll()) {
             Tbvehiculosconductores auxV_C = vehiculoconductorlocal.buscarxplaca(en.getPlaca());
-            if(auxV_C.getTbconductores() != null){
+            if (auxV_C.getTbconductores() != null) {
                 lista.add(auxV_C);
-            }else{
+            } else {
                 Tbvehiculosconductores auxNuevo = new Tbvehiculosconductores();
                 auxNuevo.setTbvehiculos(en);
                 lista.add(auxNuevo);
+            }
+        }
+        return lista;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Buscar agenda de un vehiculor">
+    @GET
+    @Path("bvehiculoagenda/{placa}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    public List<EventoAgenda> bvehiculoagenda(@PathParam("placa") String placa) {
+        List<EventoAgenda> lista = new ArrayList<>();
+        for (Tbdisponibilidadvc dv_C : disponibilidadvclocal.buscarXPlaca(placa)) {
+            if (dv_C.getSolicitud() != null) {
+                EventoAgenda evento = new EventoAgenda();
+                Tbsolicitudes solAux = dv_C.getSolicitud();
+                if (solAux.getTbseccionviajesCollection().size() > 0) {
+                    Tbseccionviajes viajeAux = (Tbseccionviajes) solAux.getTbseccionviajesCollection().toArray()[0];
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+                    evento.setId(solAux.getNumero() + "_" + placa);
+                    evento.setTitle(viajeAux.getOrigen() + "-" + viajeAux.getDestino());
+                    evento.setStart(sdf.format(viajeAux.getFechasalida()));
+                    evento.setEnd(sdf.format(viajeAux.getFecharetorno()));
+                    evento.setOverlap(false);
+                    switch (solAux.getEstado()) {
+                        case "finalizado": {
+                            evento.setRendering("background");
+                            evento.setRendering("#F4FA9A"); //amarillo
+                            break;
+                        }
+                        case "asignado": {
+                            evento.setRendering("background");
+                            evento.setRendering("#FBD5CD"); //rojo
+                        }
+                        case "enviado": {
+                            evento.setRendering("background");
+                            evento.setRendering("#CDECFB"); //azul 
+                        }
+                    }
+                    lista.add(evento);
+                }
             }
         }
         return lista;
