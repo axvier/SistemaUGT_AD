@@ -686,7 +686,7 @@ public class ws {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="busqueda de solicitudes full por cedula solicitante">
+    //<editor-fold defaultstate="collapsed" desc="busqueda de solicitudes full por estado solicitud">
     @GET
     @Path("bsolicitudesfullestado/{estado}")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
@@ -711,6 +711,15 @@ public class ws {
                 solicitanteAux = solicitanteslocal.buscarxidsolicitud(solcitud.getNumero().toString());
                 if (solicitanteAux.getIdsolicitante() != null) {
                     full.setSolicitante(solicitanteAux);
+                }
+            }
+            if (solcitud.getTbdisponibilidadvcCollection().size() > 0) {// congeguir dvehiculo conductor
+                full.setDisponibilidadvc((Tbdisponibilidadvc) solcitud.getTbdisponibilidadvcCollection().toArray()[0]);
+            } else {
+                Tbdisponibilidadvc disponVCAux = new Tbdisponibilidadvc();
+                disponVCAux = disponibilidadvclocal.buscarXSol(solcitud.getNumero().toString());
+                if (disponVCAux.getCedulaCond()!= null) {
+                    full.setDisponibilidadvc(disponVCAux);
                 }
             }
             if (solcitud.getTbseccionviajesCollection().size() > 0) {//conseguir viaje
@@ -774,22 +783,52 @@ public class ws {
             if (dv_C.getSolicitud() != null) {
                 EventoAgenda evento = new EventoAgenda();
                 Tbsolicitudes solAux = dv_C.getSolicitud();
-                if (solAux.getTbseccionviajesCollection().size() > 0) {
+                if (solAux.getTbseccionviajesCollection().size() > 0 && solAux.getTbdisponibilidadvcCollection().size()>0) {
                     Tbseccionviajes viajeAux = (Tbseccionviajes) solAux.getTbseccionviajesCollection().toArray()[0];
+                    Tbdisponibilidadvc diponVCAux = (Tbdisponibilidadvc) solAux.getTbdisponibilidadvcCollection().toArray()[0];
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
                     evento.setId(solAux.getNumero() + "_" + placa);
-                    evento.setTitle(viajeAux.getOrigen() + "-" + viajeAux.getDestino());
+                    evento.setTitle(viajeAux.getOrigen() + "-" + viajeAux.getDestino()+", conductor: "+diponVCAux.getCedulaCond().getNombres() + " "+diponVCAux.getCedulaCond().getApellidos());
                     evento.setStart(sdf.format(viajeAux.getFechasalida()));
                     evento.setEnd(sdf.format(viajeAux.getFecharetorno()));
                     evento.setOverlap(false);
                     switch (solAux.getEstado()) {
                         case "finalizado": {
                             evento.setRendering("background");
+                            evento.setResourceEditable(false);
                             evento.setRendering("#F4FA9A"); //amarillo
                             break;
                         }
                         case "asignado": {
                             evento.setRendering("background");
+                            evento.setResourceEditable(false);
+                            evento.setRendering("#FBD5CD"); //rojo
+                        }
+                        case "enviado": {
+                            evento.setRendering("background");
+                            evento.setRendering("#CDECFB"); //azul 
+                        }
+                    }
+                    lista.add(evento);
+                }else{
+                    Tbseccionviajes viajeAux =  viajelocal.buscaridS(solAux.getNumero().toString());
+                    Tbdisponibilidadvc diponVCAux = disponibilidadvclocal.buscarXSol(solAux.getNumero().toString());
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+                    evento.setId(solAux.getNumero() + "_" + placa);
+                    evento.setTitle(viajeAux.getOrigen() + "-" + viajeAux.getDestino()+", conductor: "+diponVCAux.getCedulaCond().getNombres() + " "+diponVCAux.getCedulaCond().getApellidos());
+                    evento.setStart(sdf.format(viajeAux.getFechasalida()));
+                    evento.setEnd(sdf.format(viajeAux.getFecharetorno()));
+                    evento.setOverlap(false);
+                    switch (solAux.getEstado()) {
+                        case "finalizado": {
+                            evento.setRendering("background");
+                            evento.setResourceEditable(false);
+                            evento.setRendering("#F4FA9A"); //amarillo
+                            break;
+                        }
+                        case "asignado": {
+                            evento.setRendering("background");
+                            evento.setResourceEditable(false);
                             evento.setRendering("#FBD5CD"); //rojo
                         }
                         case "enviado": {
@@ -799,6 +838,26 @@ public class ws {
                     }
                     lista.add(evento);
                 }
+            }
+        }
+        return lista;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Buscar vehiculos por grupo id">
+    @GET
+    @Path("bvehiculosconductoresgrupo/{idtipo}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    public List<Tbvehiculosconductores> bvehiculosconductoresgrupo(@PathParam("idtipo") Integer idgrupo) {
+        List<Tbvehiculosconductores> lista = new ArrayList<>();
+        for (Tbvehiculos en :vehiculolocal.filtrarXidgrupo(idgrupo)){
+            Tbvehiculosconductores auxV_C = vehiculoconductorlocal.buscarxplaca(en.getPlaca());
+            if (auxV_C.getTbconductores() != null) {
+                lista.add(auxV_C);
+            } else {
+                Tbvehiculosconductores auxNuevo = new Tbvehiculosconductores();
+                auxNuevo.setTbvehiculos(en);
+                lista.add(auxNuevo);
             }
         }
         return lista;

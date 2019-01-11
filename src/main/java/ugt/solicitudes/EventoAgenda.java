@@ -13,6 +13,15 @@ public class EventoAgenda {
     private String url;
     private String rendering;
     private boolean overlap;
+    private boolean resourceEditable;
+
+    public boolean isResourceEditable() {
+        return resourceEditable;
+    }
+
+    public void setResourceEditable(boolean resourceEditable) {
+        this.resourceEditable = resourceEditable;
+    }
     private String color;
 
     public String getId() {

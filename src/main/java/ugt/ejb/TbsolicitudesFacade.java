@@ -50,7 +50,7 @@ public class TbsolicitudesFacade extends AbstractFacade<Tbsolicitudes> implement
         List<Tbsolicitudes> result = null;
         String consulta;
         try {
-            consulta = "SELECT t FROM Tbsolicitudes t WHERE t.estado = :estado";
+            consulta = "SELECT t FROM Tbsolicitudes t WHERE t.estado = :estado order by t.numero asc";
             Query con = em.createQuery(consulta);
             con.setParameter("estado", estado);
             result = con.getResultList();

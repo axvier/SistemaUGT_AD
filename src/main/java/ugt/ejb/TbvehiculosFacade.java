@@ -57,8 +57,22 @@ public class TbvehiculosFacade extends AbstractFacade<Tbvehiculos> implements Tb
             query.setParameter(1, "Bloqueado");
             listavehiculos = query.getResultList();
         } catch (Exception e) {
-}
+        }
         return listavehiculos;
     }
-    
+
+    @Override
+    public List<Tbvehiculos> filtrarXidgrupo(Integer idgrupo) {
+        List<Tbvehiculos> listavehiculos = null;
+        String consulta;
+        try {
+            consulta = "SELECT v FROM Tbvehiculos v WHERE v.idgrupo.idgrupo = :idgrupo";
+            Query query = em.createQuery(consulta);
+            query.setParameter("idgrupo",idgrupo);
+            listavehiculos = query.getResultList();
+        } catch (Exception e) {
+        }
+        return listavehiculos;
+    }
+
 }
