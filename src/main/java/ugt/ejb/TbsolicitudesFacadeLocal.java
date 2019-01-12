@@ -34,4 +34,6 @@ public interface TbsolicitudesFacadeLocal {
     List<Tbsolicitudes> buscarallxcedula(String cedula);
     
     List<Tbsolicitudes> filtrarXestado(String estado);
+    
+    List<Tbsolicitudes> filtrarXNOestado(String estado);
 }

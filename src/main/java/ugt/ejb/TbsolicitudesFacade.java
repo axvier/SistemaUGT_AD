@@ -36,7 +36,7 @@ public class TbsolicitudesFacade extends AbstractFacade<Tbsolicitudes> implement
         List<Tbsolicitudes> result = null;
         String consulta;
         try {
-            consulta = "SELECT t.solicitud FROM Tbseccionsolicitantes t WHERE t.cedulau.cedula = :numero";
+            consulta = "SELECT t.solicitud FROM Tbseccionsolicitantes t WHERE t.cedulau.cedula = :numero order by t.solicitud.numero asc";
             Query con = em.createQuery(consulta);
             con.setParameter("numero", cedula);
             result = con.getResultList();
@@ -51,6 +51,20 @@ public class TbsolicitudesFacade extends AbstractFacade<Tbsolicitudes> implement
         String consulta;
         try {
             consulta = "SELECT t FROM Tbsolicitudes t WHERE t.estado = :estado order by t.numero asc";
+            Query con = em.createQuery(consulta);
+            con.setParameter("estado", estado);
+            result = con.getResultList();
+        } catch (Exception e) {
+        }
+        return result;
+    }
+
+    @Override
+    public List<Tbsolicitudes> filtrarXNOestado(String estado) {
+        List<Tbsolicitudes> result = null;
+        String consulta;
+        try {
+            consulta = "SELECT t FROM Tbsolicitudes t WHERE t.estado <> :estado order by t.numero asc";
             Query con = em.createQuery(consulta);
             con.setParameter("estado", estado);
             result = con.getResultList();

@@ -752,6 +752,73 @@ public class ws {
         return result;
     }
     //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="busqueda de solicitudes full por estado solicitud">
+    @GET
+    @Path("bsolicitudesfullnoestado/{estado}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public List<Solicitudesfull> bsolicitudesfullnoestado(@PathParam("estado") String estado) {
+        List<Solicitudesfull> result = new ArrayList<>();
+        for (Tbsolicitudes solcitud : solicitudeslocal.filtrarXNOestado(estado)) {
+            Solicitudesfull full = new Solicitudesfull();
+            full.setSolicitud(solcitud);// se ingresan las colecciones disponibles en la tabla solcitudes: solicitud, solicitante, motivo, viaje
+            if (solcitud.getTbseccionmotivoCollection().size() > 0) {//conseguir motivo
+                full.setMotivo((Tbseccionmotivo) solcitud.getTbseccionmotivoCollection().toArray()[0]);
+            } else {
+                Tbseccionmotivo motivoAux = motivolocal.buscarXIDsolicitud(solcitud.getNumero());
+                if (motivoAux.getIdmotivo() != null) {
+                    full.setMotivo(motivoAux);
+                }
+            }
+            if (solcitud.getTbseccionsolicitantesCollection().size() > 0) {// congeguir solicitante
+                full.setSolicitante((Tbseccionsolicitantes) solcitud.getTbseccionsolicitantesCollection().toArray()[0]);
+            } else {
+                Tbseccionsolicitantes solicitanteAux = new Tbseccionsolicitantes();
+                solicitanteAux = solicitanteslocal.buscarxidsolicitud(solcitud.getNumero().toString());
+                if (solicitanteAux.getIdsolicitante() != null) {
+                    full.setSolicitante(solicitanteAux);
+                }
+            }
+            if (solcitud.getTbdisponibilidadvcCollection().size() > 0) {// congeguir dvehiculo conductor
+                full.setDisponibilidadvc((Tbdisponibilidadvc) solcitud.getTbdisponibilidadvcCollection().toArray()[0]);
+            } else {
+                Tbdisponibilidadvc disponVCAux = new Tbdisponibilidadvc();
+                disponVCAux = disponibilidadvclocal.buscarXSol(solcitud.getNumero().toString());
+                if (disponVCAux.getCedulaCond()!= null) {
+                    full.setDisponibilidadvc(disponVCAux);
+                }
+            }
+            if (solcitud.getTbseccionviajesCollection().size() > 0) {//conseguir viaje
+                full.setViaje((Tbseccionviajes) solcitud.getTbseccionviajesCollection().toArray()[0]);
+            } else {
+                Tbseccionviajes viajeAux = new Tbseccionviajes();
+                viajeAux = viajelocal.buscaridS(solcitud.getNumero().toString()); // buscar seccion viaje con id de solicitud
+                if (viajeAux.getIdviaje() != null) {
+                    full.setViaje(viajeAux);//set seccion viaje en solicitud completa
+                }
+            }
+            if (full.getViaje() != null) {
+                if (full.getViaje().getTbviajepasajeroCollection().size() > 0) {//conseguir pasajeros
+                    List<Tbviajepasajero> viajepasajeroList = new ArrayList<>();
+                    for (Tbviajepasajero aux : full.getViaje().getTbviajepasajeroCollection()) {
+                        viajepasajeroList.add(aux);
+                    }
+                    if (viajepasajeroList.size() > 0) {
+                        full.setPasajeros(viajepasajeroList);
+                    }
+                } else {
+                    List<Tbviajepasajero> viajepasajeroList = viajepasajerolocal.buscarXIDviaje(full.getViaje().getIdviaje()); // lista de pasajeros de la tabla tbviajepasajero segun idviaje
+                    if (viajepasajeroList.size() > 0) {
+                        full.setPasajeros(viajepasajeroList);
+                    }
+                }
+            }
+            result.add(full);
+        }
+        return result;
+    }
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Buscar vehiculos con o sin conductor">
     @GET
@@ -788,7 +855,7 @@ public class ws {
                     Tbdisponibilidadvc diponVCAux = (Tbdisponibilidadvc) solAux.getTbdisponibilidadvcCollection().toArray()[0];
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
                     evento.setId(solAux.getNumero() + "_" + placa);
-                    evento.setTitle(viajeAux.getOrigen() + "-" + viajeAux.getDestino()+", conductor: "+diponVCAux.getCedulaCond().getNombres() + " "+diponVCAux.getCedulaCond().getApellidos());
+                    evento.setTitle(viajeAux.getOrigen() + "-" + viajeAux.getDestino()+"\nConductor: "+diponVCAux.getCedulaCond().getNombres() + " "+diponVCAux.getCedulaCond().getApellidos());
                     evento.setStart(sdf.format(viajeAux.getFechasalida()));
                     evento.setEnd(sdf.format(viajeAux.getFecharetorno()));
                     evento.setOverlap(false);
