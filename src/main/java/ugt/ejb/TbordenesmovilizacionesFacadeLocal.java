@@ -30,4 +30,5 @@ public interface TbordenesmovilizacionesFacadeLocal {
 
     int count();
     
+    Tbordenesmovilizaciones filtrarOrdenXIdsol(Integer idsolicitud);
 }

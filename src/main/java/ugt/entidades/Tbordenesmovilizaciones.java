@@ -30,10 +30,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(schema = "esquemaugt")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Tbordenesmovilizaciones.findAll", query = "SELECT t FROM Tbordenesmovilizaciones t")
-    , @NamedQuery(name = "Tbordenesmovilizaciones.findByNumeroOrden", query = "SELECT t FROM Tbordenesmovilizaciones t WHERE t.numeroOrden = :numeroOrden")
-    , @NamedQuery(name = "Tbordenesmovilizaciones.findByFechagenerar", query = "SELECT t FROM Tbordenesmovilizaciones t WHERE t.fechagenerar = :fechagenerar")
-    , @NamedQuery(name = "Tbordenesmovilizaciones.findByFecharetorno", query = "SELECT t FROM Tbordenesmovilizaciones t WHERE t.fecharetorno = :fecharetorno")})
+    @NamedQuery(name = "Tbordenesmovilizaciones_1.findAll", query = "SELECT t FROM Tbordenesmovilizaciones_1 t")
+    , @NamedQuery(name = "Tbordenesmovilizaciones_1.findByNumeroOrden", query = "SELECT t FROM Tbordenesmovilizaciones_1 t WHERE t.numeroOrden = :numeroOrden")
+    , @NamedQuery(name = "Tbordenesmovilizaciones_1.findByFechagenerar", query = "SELECT t FROM Tbordenesmovilizaciones_1 t WHERE t.fechagenerar = :fechagenerar")
+    , @NamedQuery(name = "Tbordenesmovilizaciones_1.findByIdpdf", query = "SELECT t FROM Tbordenesmovilizaciones_1 t WHERE t.idpdf = :idpdf")
+    , @NamedQuery(name = "Tbordenesmovilizaciones_1.findByKminicio", query = "SELECT t FROM Tbordenesmovilizaciones_1 t WHERE t.kminicio = :kminicio")
+    , @NamedQuery(name = "Tbordenesmovilizaciones_1.findByKmfin", query = "SELECT t FROM Tbordenesmovilizaciones_1 t WHERE t.kmfin = :kmfin")})
 public class Tbordenesmovilizaciones implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,14 +48,16 @@ public class Tbordenesmovilizaciones implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "fechagenerar")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechagenerar;
-    @Column(name = "fecharetorno")
-    @Temporal(TemporalType.DATE)
-    private Date fecharetorno;
-    @JoinColumn(name = "idpdf", referencedColumnName = "idpdf")
-    @ManyToOne
-    private Tbpdf idpdf;
+    @Column(name = "idpdf")
+    private Integer idpdf;
+    @Size(max = 50)
+    @Column(name = "kminicio")
+    private String kminicio;
+    @Size(max = 50)
+    @Column(name = "kmfin")
+    private String kmfin;
     @JoinColumn(name = "solicitud", referencedColumnName = "numero")
     @ManyToOne(optional = false)
     private Tbsolicitudes solicitud;
@@ -85,21 +89,29 @@ public class Tbordenesmovilizaciones implements Serializable {
     public void setFechagenerar(Date fechagenerar) {
         this.fechagenerar = fechagenerar;
     }
-
-    public Date getFecharetorno() {
-        return fecharetorno;
-    }
-
-    public void setFecharetorno(Date fecharetorno) {
-        this.fecharetorno = fecharetorno;
-    }
-
-    public Tbpdf getIdpdf() {
+    
+    public Integer getIdpdf() {
         return idpdf;
     }
 
-    public void setIdpdf(Tbpdf idpdf) {
+    public void setIdpdf(Integer idpdf) {
         this.idpdf = idpdf;
+    }
+
+    public String getKminicio() {
+        return kminicio;
+    }
+
+    public void setKminicio(String kminicio) {
+        this.kminicio = kminicio;
+    }
+
+    public String getKmfin() {
+        return kmfin;
+    }
+
+    public void setKmfin(String kmfin) {
+        this.kmfin = kmfin;
     }
 
     public Tbsolicitudes getSolicitud() {
@@ -134,5 +146,5 @@ public class Tbordenesmovilizaciones implements Serializable {
     public String toString() {
         return "ugt.entidades.Tbordenesmovilizaciones[ numeroOrden=" + numeroOrden + " ]";
     }
-    
+
 }

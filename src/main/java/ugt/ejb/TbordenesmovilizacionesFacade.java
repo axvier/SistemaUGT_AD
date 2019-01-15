@@ -5,9 +5,12 @@
  */
 package ugt.ejb;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import ugt.entidades.Tbordenesmovilizaciones;
 
 /**
@@ -27,6 +30,24 @@ public class TbordenesmovilizacionesFacade extends AbstractFacade<Tbordenesmovil
 
     public TbordenesmovilizacionesFacade() {
         super(Tbordenesmovilizaciones.class);
+    }
+
+    @Override
+    public Tbordenesmovilizaciones filtrarOrdenXIdsol(Integer idsolicitud) {
+        Tbordenesmovilizaciones result = null;
+        List<Tbordenesmovilizaciones> listAux = new ArrayList<>();
+        String consulta;
+        try {
+            consulta = "SELECT t FROM Tbordenesmovilizaciones t WHERE t.solicitud.numero = :id";
+            Query con = em.createQuery(consulta);
+            con.setParameter("id", idsolicitud);
+            listAux = con.getResultList();
+            if(listAux.size() > 0 && listAux.size()<2){
+                result = listAux.get(0);
+            }
+        } catch (NumberFormatException e) {
+        }
+        return result;
     }
     
 }

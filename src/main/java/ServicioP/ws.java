@@ -68,6 +68,8 @@ public class ws {
     private TbdisponibilidadvcFacadeLocal disponibilidadvclocal;
     @EJB
     private TbentidadFacadeLocal entidadlocal;
+    @EJB
+    private TbordenesmovilizacionesFacadeLocal ordenesmovilziacionlocal;
 
     //<editor-fold defaultstate="collapsed" desc="Busqueda de marca segun el nombre">
 //    @GET
@@ -475,6 +477,15 @@ public class ws {
                     full.setSolicitante(solicitanteAux);
                 }
             }
+            if (solcitud.getTbdisponibilidadvcCollection().size() > 0) {// congeguir dvehiculo conductor
+                full.setDisponibilidadvc((Tbdisponibilidadvc) solcitud.getTbdisponibilidadvcCollection().toArray()[0]);
+            } else {
+                Tbdisponibilidadvc disponVCAux = new Tbdisponibilidadvc();
+                disponVCAux = disponibilidadvclocal.buscarXSol(solcitud.getNumero().toString());
+                if (disponVCAux.getCedulaCond()!= null) {
+                    full.setDisponibilidadvc(disponVCAux);
+                }
+            }
             if (solcitud.getTbseccionviajesCollection().size() > 0) {//conseguir viaje
                 full.setViaje((Tbseccionviajes) solcitud.getTbseccionviajesCollection().toArray()[0]);
             } else {
@@ -535,6 +546,15 @@ public class ws {
                 solicitanteAux = solicitanteslocal.buscarxidsolicitud(solicitud.getNumero().toString());
                 if (solicitanteAux.getIdsolicitante() != null) {
                     full.setSolicitante(solicitanteAux);
+                }
+            }
+            if (solicitud.getTbdisponibilidadvcCollection().size() > 0) {// congeguir dvehiculo conductor
+                full.setDisponibilidadvc((Tbdisponibilidadvc) solicitud.getTbdisponibilidadvcCollection().toArray()[0]);
+            } else {
+                Tbdisponibilidadvc disponVCAux = new Tbdisponibilidadvc();
+                disponVCAux = disponibilidadvclocal.buscarXSol(solicitud.getNumero().toString());
+                if (disponVCAux.getCedulaCond()!= null) {
+                    full.setDisponibilidadvc(disponVCAux);
                 }
             }
             if (solicitud.getTbseccionviajesCollection().size() > 0) {//conseguir viaje
@@ -928,6 +948,18 @@ public class ws {
             }
         }
         return lista;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="busqueda de solicitudes full por cedula solicitante">
+    @GET
+    @Path("bordenesmovilizacionsol/{idsolicitud}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public Tbordenesmovilizaciones bordenesmovilizacionsol(@PathParam("idsolicitud") Integer idsolicitud) {
+        Tbordenesmovilizaciones result = new Tbordenesmovilizaciones();
+        result = ordenesmovilziacionlocal.filtrarOrdenXIdsol(idsolicitud);
+        return result;
     }
     //</editor-fold>
 }
