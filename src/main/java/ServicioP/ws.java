@@ -482,7 +482,7 @@ public class ws {
             } else {
                 Tbdisponibilidadvc disponVCAux = new Tbdisponibilidadvc();
                 disponVCAux = disponibilidadvclocal.buscarXSol(solcitud.getNumero().toString());
-                if (disponVCAux.getCedulaCond()!= null) {
+                if (disponVCAux.getCedulaCond() != null) {
                     full.setDisponibilidadvc(disponVCAux);
                 }
             }
@@ -553,7 +553,7 @@ public class ws {
             } else {
                 Tbdisponibilidadvc disponVCAux = new Tbdisponibilidadvc();
                 disponVCAux = disponibilidadvclocal.buscarXSol(solicitud.getNumero().toString());
-                if (disponVCAux.getCedulaCond()!= null) {
+                if (disponVCAux.getCedulaCond() != null) {
                     full.setDisponibilidadvc(disponVCAux);
                 }
             }
@@ -738,7 +738,7 @@ public class ws {
             } else {
                 Tbdisponibilidadvc disponVCAux = new Tbdisponibilidadvc();
                 disponVCAux = disponibilidadvclocal.buscarXSol(solcitud.getNumero().toString());
-                if (disponVCAux.getCedulaCond()!= null) {
+                if (disponVCAux.getCedulaCond() != null) {
                     full.setDisponibilidadvc(disponVCAux);
                 }
             }
@@ -772,7 +772,7 @@ public class ws {
         return result;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="busqueda de solicitudes full por estado solicitud">
     @GET
     @Path("bsolicitudesfullnoestado/{estado}")
@@ -805,7 +805,7 @@ public class ws {
             } else {
                 Tbdisponibilidadvc disponVCAux = new Tbdisponibilidadvc();
                 disponVCAux = disponibilidadvclocal.buscarXSol(solcitud.getNumero().toString());
-                if (disponVCAux.getCedulaCond()!= null) {
+                if (disponVCAux.getCedulaCond() != null) {
                     full.setDisponibilidadvc(disponVCAux);
                 }
             }
@@ -870,12 +870,12 @@ public class ws {
             if (dv_C.getSolicitud() != null) {
                 EventoAgenda evento = new EventoAgenda();
                 Tbsolicitudes solAux = dv_C.getSolicitud();
-                if (solAux.getTbseccionviajesCollection().size() > 0 && solAux.getTbdisponibilidadvcCollection().size()>0) {
+                if (solAux.getTbseccionviajesCollection().size() > 0 && solAux.getTbdisponibilidadvcCollection().size() > 0) {
                     Tbseccionviajes viajeAux = (Tbseccionviajes) solAux.getTbseccionviajesCollection().toArray()[0];
                     Tbdisponibilidadvc diponVCAux = (Tbdisponibilidadvc) solAux.getTbdisponibilidadvcCollection().toArray()[0];
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
                     evento.setId(solAux.getNumero() + "_" + placa);
-                    evento.setTitle(viajeAux.getOrigen() + "-" + viajeAux.getDestino()+"\nConductor: "+diponVCAux.getCedulaCond().getNombres() + " "+diponVCAux.getCedulaCond().getApellidos());
+                    evento.setTitle(viajeAux.getOrigen() + "-" + viajeAux.getDestino() + "\nConductor: " + diponVCAux.getCedulaCond().getNombres() + " " + diponVCAux.getCedulaCond().getApellidos());
                     evento.setStart(sdf.format(viajeAux.getFechasalida()));
                     evento.setEnd(sdf.format(viajeAux.getFecharetorno()));
                     evento.setOverlap(false);
@@ -897,12 +897,12 @@ public class ws {
                         }
                     }
                     lista.add(evento);
-                }else{
-                    Tbseccionviajes viajeAux =  viajelocal.buscaridS(solAux.getNumero().toString());
+                } else {
+                    Tbseccionviajes viajeAux = viajelocal.buscaridS(solAux.getNumero().toString());
                     Tbdisponibilidadvc diponVCAux = disponibilidadvclocal.buscarXSol(solAux.getNumero().toString());
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
                     evento.setId(solAux.getNumero() + "_" + placa);
-                    evento.setTitle(viajeAux.getOrigen() + "-" + viajeAux.getDestino()+", conductor: "+diponVCAux.getCedulaCond().getNombres() + " "+diponVCAux.getCedulaCond().getApellidos());
+                    evento.setTitle(viajeAux.getOrigen() + "-" + viajeAux.getDestino() + ", conductor: " + diponVCAux.getCedulaCond().getNombres() + " " + diponVCAux.getCedulaCond().getApellidos());
                     evento.setStart(sdf.format(viajeAux.getFechasalida()));
                     evento.setEnd(sdf.format(viajeAux.getFecharetorno()));
                     evento.setOverlap(false);
@@ -930,14 +930,14 @@ public class ws {
         return lista;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Buscar vehiculos por grupo id">
     @GET
     @Path("bvehiculosconductoresgrupo/{idtipo}")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
     public List<Tbvehiculosconductores> bvehiculosconductoresgrupo(@PathParam("idtipo") Integer idgrupo) {
         List<Tbvehiculosconductores> lista = new ArrayList<>();
-        for (Tbvehiculos en :vehiculolocal.filtrarXidgrupo(idgrupo)){
+        for (Tbvehiculos en : vehiculolocal.filtrarXidgrupo(idgrupo)) {
             Tbvehiculosconductores auxV_C = vehiculoconductorlocal.buscarxplaca(en.getPlaca());
             if (auxV_C.getTbconductores() != null) {
                 lista.add(auxV_C);
@@ -950,8 +950,8 @@ public class ws {
         return lista;
     }
     //</editor-fold>
-    
-    //<editor-fold defaultstate="collapsed" desc="busqueda de solicitudes full por cedula solicitante">
+
+    //<editor-fold defaultstate="collapsed" desc="busqueda de solicitudes full por id solicitud">
     @GET
     @Path("bordenesmovilizacionsol/{idsolicitud}")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
@@ -960,6 +960,149 @@ public class ws {
         Tbordenesmovilizaciones result = new Tbordenesmovilizaciones();
         result = ordenesmovilziacionlocal.filtrarOrdenXIdsol(idsolicitud);
         return result;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="busqueda de orden movilizacion full por idsolicitud">
+    @GET
+    @Path("bordenfullsol/{idsolicitud}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public Solicitudesfull bordenfullsol(@PathParam("idsolicitud") Integer idsolicitud) {
+        Solicitudesfull full = new Solicitudesfull();
+        Tbordenesmovilizaciones orden = new Tbordenesmovilizaciones();
+        orden = ordenesmovilziacionlocal.filtrarOrdenXIdsol(idsolicitud);
+        if (orden != null) {
+            full.setOrdenMovilzicion(orden);
+            Tbsolicitudes solicitud;
+            solicitud = solicitudeslocal.find(idsolicitud);
+            if (solicitud != null) {
+                full.setSolicitud(solicitud);// se ingresan las colecciones disponibles en la tabla solcitudes: solicitud, solicitante, motivo, viaje
+                if (solicitud.getTbseccionmotivoCollection().size() > 0) {//conseguir motivo
+                    full.setMotivo((Tbseccionmotivo) solicitud.getTbseccionmotivoCollection().toArray()[0]);
+                } else {
+                    Tbseccionmotivo motivoAux = motivolocal.buscarXIDsolicitud(solicitud.getNumero());
+                    if (motivoAux.getIdmotivo() != null) {
+                        full.setMotivo(motivoAux);
+                    }
+                }
+                if (solicitud.getTbseccionsolicitantesCollection().size() > 0) {//conseguir solicitante
+                    full.setSolicitante((Tbseccionsolicitantes) solicitud.getTbseccionsolicitantesCollection().toArray()[0]);
+                } else {
+                    Tbseccionsolicitantes solicitanteAux = new Tbseccionsolicitantes();
+                    solicitanteAux = solicitanteslocal.buscarxidsolicitud(solicitud.getNumero().toString());
+                    if (solicitanteAux.getIdsolicitante() != null) {
+                        full.setSolicitante(solicitanteAux);
+                    }
+                }
+                if (solicitud.getTbdisponibilidadvcCollection().size() > 0) {// congeguir dvehiculo conductor
+                    full.setDisponibilidadvc((Tbdisponibilidadvc) solicitud.getTbdisponibilidadvcCollection().toArray()[0]);
+                } else {
+                    Tbdisponibilidadvc disponVCAux = new Tbdisponibilidadvc();
+                    disponVCAux = disponibilidadvclocal.buscarXSol(solicitud.getNumero().toString());
+                    if (disponVCAux.getCedulaCond() != null) {
+                        full.setDisponibilidadvc(disponVCAux);
+                    }
+                }
+                if (solicitud.getTbseccionviajesCollection().size() > 0) {//conseguir viaje
+                    full.setViaje((Tbseccionviajes) solicitud.getTbseccionviajesCollection().toArray()[0]);
+                } else {
+                    Tbseccionviajes viajeAux = new Tbseccionviajes();
+                    viajeAux = viajelocal.buscaridS(solicitud.getNumero().toString()); // buscar seccion viaje con id de solicitud
+                    if (viajeAux.getIdviaje() != null) {
+                        full.setViaje(viajeAux);//set seccion viaje en solicitud completa
+                    }
+                }
+                if (full.getViaje() != null) {
+                    if (full.getViaje().getTbviajepasajeroCollection().size() > 0) {//conseguir pasajeros
+                        List<Tbviajepasajero> viajepasajeroList = new ArrayList<>();
+                        for (Tbviajepasajero aux : full.getViaje().getTbviajepasajeroCollection()) {
+                            viajepasajeroList.add(aux);
+                        }
+                        if (viajepasajeroList.size() > 0) {
+                            full.setPasajeros(viajepasajeroList);
+                        }
+                    } else {
+                        List<Tbviajepasajero> viajepasajeroList = viajepasajerolocal.buscarXIDviaje(full.getViaje().getIdviaje()); // lista de pasajeros de la tabla tbviajepasajero segun idviaje
+                        if (viajepasajeroList.size() > 0) {
+                            full.setPasajeros(viajepasajeroList);
+                        }
+                    }
+                }
+            }
+        }
+        return full;
+    }
+    //</editor-fold>
+    
+     //<editor-fold defaultstate="collapsed" desc="busqueda de orden movilizacion full por idsolicitud">
+    @GET
+    @Path("blistaordenfullsol")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public List<Solicitudesfull> blistaordenfullsol() {
+        List<Solicitudesfull> lista = new ArrayList<>();
+        for (Tbordenesmovilizaciones orden : ordenesmovilziacionlocal.findAll()) {
+            Solicitudesfull full = new Solicitudesfull();
+            full.setOrdenMovilzicion(orden);
+            Tbsolicitudes solicitud = orden.getSolicitud();
+            if (solicitud != null) {
+                full.setSolicitud(solicitud);// se ingresan las colecciones disponibles en la tabla solcitudes: solicitud, solicitante, motivo, viaje
+                if (solicitud.getTbseccionmotivoCollection().size() > 0) {//conseguir motivo
+                    full.setMotivo((Tbseccionmotivo) solicitud.getTbseccionmotivoCollection().toArray()[0]);
+                } else {
+                    Tbseccionmotivo motivoAux = motivolocal.buscarXIDsolicitud(solicitud.getNumero());
+                    if (motivoAux.getIdmotivo() != null) {
+                        full.setMotivo(motivoAux);
+                    }
+                }
+                if (solicitud.getTbseccionsolicitantesCollection().size() > 0) {//conseguir solicitante
+                    full.setSolicitante((Tbseccionsolicitantes) solicitud.getTbseccionsolicitantesCollection().toArray()[0]);
+                } else {
+                    Tbseccionsolicitantes solicitanteAux = new Tbseccionsolicitantes();
+                    solicitanteAux = solicitanteslocal.buscarxidsolicitud(solicitud.getNumero().toString());
+                    if (solicitanteAux.getIdsolicitante() != null) {
+                        full.setSolicitante(solicitanteAux);
+                    }
+                }
+                if (solicitud.getTbdisponibilidadvcCollection().size() > 0) {// congeguir dvehiculo conductor
+                    full.setDisponibilidadvc((Tbdisponibilidadvc) solicitud.getTbdisponibilidadvcCollection().toArray()[0]);
+                } else {
+                    Tbdisponibilidadvc disponVCAux = new Tbdisponibilidadvc();
+                    disponVCAux = disponibilidadvclocal.buscarXSol(solicitud.getNumero().toString());
+                    if (disponVCAux.getCedulaCond() != null) {
+                        full.setDisponibilidadvc(disponVCAux);
+                    }
+                }
+                if (solicitud.getTbseccionviajesCollection().size() > 0) {//conseguir viaje
+                    full.setViaje((Tbseccionviajes) solicitud.getTbseccionviajesCollection().toArray()[0]);
+                } else {
+                    Tbseccionviajes viajeAux = new Tbseccionviajes();
+                    viajeAux = viajelocal.buscaridS(solicitud.getNumero().toString()); // buscar seccion viaje con id de solicitud
+                    if (viajeAux.getIdviaje() != null) {
+                        full.setViaje(viajeAux);//set seccion viaje en solicitud completa
+                    }
+                }
+                if (full.getViaje() != null) {
+                    if (full.getViaje().getTbviajepasajeroCollection().size() > 0) {//conseguir pasajeros
+                        List<Tbviajepasajero> viajepasajeroList = new ArrayList<>();
+                        for (Tbviajepasajero aux : full.getViaje().getTbviajepasajeroCollection()) {
+                            viajepasajeroList.add(aux);
+                        }
+                        if (viajepasajeroList.size() > 0) {
+                            full.setPasajeros(viajepasajeroList);
+                        }
+                    } else {
+                        List<Tbviajepasajero> viajepasajeroList = viajepasajerolocal.buscarXIDviaje(full.getViaje().getIdviaje()); // lista de pasajeros de la tabla tbviajepasajero segun idviaje
+                        if (viajepasajeroList.size() > 0) {
+                            full.setPasajeros(viajepasajeroList);
+                        }
+                    }
+                }
+            }
+            lista.add(full);
+        }
+        return lista;
     }
     //</editor-fold>
 }
