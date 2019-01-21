@@ -30,4 +30,6 @@ public interface TbrevisionesmecanicasFacadeLocal {
 
     int count();
     
+    List<Tbrevisionesmecanicas> filtrarXsolicitud(String placa);
+    
 }

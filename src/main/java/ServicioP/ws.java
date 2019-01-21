@@ -70,6 +70,8 @@ public class ws {
     private TbentidadFacadeLocal entidadlocal;
     @EJB
     private TbordenesmovilizacionesFacadeLocal ordenesmovilziacionlocal;
+    @EJB
+    private TbrevisionesmecanicasFacadeLocal revisionesmecanicaslocal;
 
     //<editor-fold defaultstate="collapsed" desc="Busqueda de marca segun el nombre">
 //    @GET
@@ -775,6 +777,74 @@ public class ws {
 
     //<editor-fold defaultstate="collapsed" desc="busqueda de solicitudes full por estado solicitud">
     @GET
+    @Path("bsolicitudesfullea")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public List<Solicitudesfull> bsolicitudesfullea() {
+        List<Solicitudesfull> result = new ArrayList<>();
+//        for (Tbsolicitudes solcitud : solicitudeslocal.filtrarXestado(estado)) {
+        for (Tbsolicitudes solcitud : solicitudeslocal.findAllEnviadoAsignada()) {
+            Solicitudesfull full = new Solicitudesfull();
+            full.setSolicitud(solcitud);// se ingresan las colecciones disponibles en la tabla solcitudes: solicitud, solicitante, motivo, viaje
+            if (solcitud.getTbseccionmotivoCollection().size() > 0) {//conseguir motivo
+                full.setMotivo((Tbseccionmotivo) solcitud.getTbseccionmotivoCollection().toArray()[0]);
+            } else {
+                Tbseccionmotivo motivoAux = motivolocal.buscarXIDsolicitud(solcitud.getNumero());
+                if (motivoAux.getIdmotivo() != null) {
+                    full.setMotivo(motivoAux);
+                }
+            }
+            if (solcitud.getTbseccionsolicitantesCollection().size() > 0) {// congeguir solicitante
+                full.setSolicitante((Tbseccionsolicitantes) solcitud.getTbseccionsolicitantesCollection().toArray()[0]);
+            } else {
+                Tbseccionsolicitantes solicitanteAux = new Tbseccionsolicitantes();
+                solicitanteAux = solicitanteslocal.buscarxidsolicitud(solcitud.getNumero().toString());
+                if (solicitanteAux.getIdsolicitante() != null) {
+                    full.setSolicitante(solicitanteAux);
+                }
+            }
+            if (solcitud.getTbdisponibilidadvcCollection().size() > 0) {// congeguir dvehiculo conductor
+                full.setDisponibilidadvc((Tbdisponibilidadvc) solcitud.getTbdisponibilidadvcCollection().toArray()[0]);
+            } else {
+                Tbdisponibilidadvc disponVCAux = new Tbdisponibilidadvc();
+                disponVCAux = disponibilidadvclocal.buscarXSol(solcitud.getNumero().toString());
+                if (disponVCAux.getCedulaCond() != null) {
+                    full.setDisponibilidadvc(disponVCAux);
+                }
+            }
+            if (solcitud.getTbseccionviajesCollection().size() > 0) {//conseguir viaje
+                full.setViaje((Tbseccionviajes) solcitud.getTbseccionviajesCollection().toArray()[0]);
+            } else {
+                Tbseccionviajes viajeAux = new Tbseccionviajes();
+                viajeAux = viajelocal.buscaridS(solcitud.getNumero().toString()); // buscar seccion viaje con id de solicitud
+                if (viajeAux.getIdviaje() != null) {
+                    full.setViaje(viajeAux);//set seccion viaje en solicitud completa
+                }
+            }
+            if (full.getViaje() != null) {
+                if (full.getViaje().getTbviajepasajeroCollection().size() > 0) {//conseguir pasajeros
+                    List<Tbviajepasajero> viajepasajeroList = new ArrayList<>();
+                    for (Tbviajepasajero aux : full.getViaje().getTbviajepasajeroCollection()) {
+                        viajepasajeroList.add(aux);
+                    }
+                    if (viajepasajeroList.size() > 0) {
+                        full.setPasajeros(viajepasajeroList);
+                    }
+                } else {
+                    List<Tbviajepasajero> viajepasajeroList = viajepasajerolocal.buscarXIDviaje(full.getViaje().getIdviaje()); // lista de pasajeros de la tabla tbviajepasajero segun idviaje
+                    if (viajepasajeroList.size() > 0) {
+                        full.setPasajeros(viajepasajeroList);
+                    }
+                }
+            }
+            result.add(full);
+        }
+        return result;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="busqueda de solicitudes full por no estado solicitud">
+    @GET
     @Path("bsolicitudesfullnoestado/{estado}")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
     @Transactional
@@ -1034,8 +1104,8 @@ public class ws {
         return full;
     }
     //</editor-fold>
-    
-     //<editor-fold defaultstate="collapsed" desc="busqueda de orden movilizacion full por idsolicitud">
+
+    //<editor-fold defaultstate="collapsed" desc="busqueda de orden movilizacion full por idsolicitud">
     @GET
     @Path("blistaordenfullsol")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
@@ -1103,6 +1173,18 @@ public class ws {
             lista.add(full);
         }
         return lista;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="filtrar tb revisiones por columna y valor">
+    @GET
+    @Path("btbrevisionesmecanicassol/{valor}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public List<Tbrevisionesmecanicas> btbrevisionesmecanicassol(@PathParam("valor") String valor) {
+        List<Tbrevisionesmecanicas> result = new ArrayList<>();
+        result = revisionesmecanicaslocal.filtrarXsolicitud(valor);
+        return result;
     }
     //</editor-fold>
 }

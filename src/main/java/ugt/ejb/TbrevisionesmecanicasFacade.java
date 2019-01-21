@@ -5,9 +5,12 @@
  */
 package ugt.ejb;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import ugt.entidades.Tbrevisionesmecanicas;
 
 /**
@@ -27,6 +30,20 @@ public class TbrevisionesmecanicasFacade extends AbstractFacade<Tbrevisionesmeca
 
     public TbrevisionesmecanicasFacade() {
         super(Tbrevisionesmecanicas.class);
+    }
+
+    @Override
+    public List<Tbrevisionesmecanicas> filtrarXsolicitud(String placa) {
+        List<Tbrevisionesmecanicas> lista = new ArrayList<>();
+        String consulta;
+        try {
+            consulta = "SELECT t FROM Tbrevisionesmecanicas t WHERE t.matricula.placa = :idplaca ORDER BY t.fecha DESC";
+            Query con = em.createQuery(consulta);
+            con.setParameter("idplaca", placa);
+            lista = con.getResultList();
+        } catch (Exception e) {
+        }
+        return lista;
     }
     
 }

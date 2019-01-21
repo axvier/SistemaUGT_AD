@@ -72,5 +72,19 @@ public class TbsolicitudesFacade extends AbstractFacade<Tbsolicitudes> implement
         }
         return result;
     }
+
+    @Override
+    public List<Tbsolicitudes> findAllEnviadoAsignada() {
+        List<Tbsolicitudes> result = null;
+        String consulta;
+        try {
+            consulta = "SELECT t FROM Tbsolicitudes t WHERE t.estado IN ('enviado','asignada') order by t.numero asc";
+            Query con = em.createQuery(consulta);
+            
+            result = con.getResultList();
+        } catch (Exception e) {
+        }
+        return result;
+    }
     
 }
