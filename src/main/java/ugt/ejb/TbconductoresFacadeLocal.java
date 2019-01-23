@@ -36,4 +36,6 @@ public interface TbconductoresFacadeLocal {
     List<Tbconductores> bloqueados();
     
     int modconductor(Tbconductores tbconductores, String cedula);
+    
+    List<Tbconductores> findAllOrden(String forma,String campo);
 }

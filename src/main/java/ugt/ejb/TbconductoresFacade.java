@@ -76,4 +76,18 @@ public class TbconductoresFacade extends AbstractFacade<Tbconductores> implement
         return result;
     }
 
+    @Override
+    public List<Tbconductores> findAllOrden(String forma, String campo) {
+        List<Tbconductores> listaconductor = null;
+        String consulta;
+        try {
+            consulta = "SELECT c FROM Tbconductores c WHERE c.estado <> :jubilado ORDER BY c." + campo + " " + forma;
+            Query query = em.createQuery(consulta);
+            query.setParameter("jubilado", "Jubilado");
+            listaconductor = query.getResultList();
+        } catch (Exception e) {
+        }
+        return listaconductor;
+    }
+
 }

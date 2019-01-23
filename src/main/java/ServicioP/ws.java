@@ -1238,7 +1238,7 @@ public class ws {
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
     public List<ConductorRepNomina> reporteconductoresnomina() {
         List<ConductorRepNomina> lista = new ArrayList<>();
-        for (Tbconductores en : conductorlocal.findAll()) {
+        for (Tbconductores en : conductorlocal.findAllOrden("ASC", "apellidos")) {
             ConductorRepNomina datos = new ConductorRepNomina();
             datos.setConductor(en);
             Tblicencias licencia = licenciaslocal.findLicencia1(en.getCedula());
