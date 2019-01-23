@@ -26,6 +26,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import ugt.reportes.ConductorRepNomina;
+import ugt.reportes.ConductoresRepEstado;
 import ugt.solicitudes.EventoAgenda;
 import ugt.solicitudes.Solicitudesfull;
 import ugt.solicitudes.SolicitudesfullLista;
@@ -1189,6 +1191,63 @@ public class ws {
         List<Tbrevisionesmecanicas> result = new ArrayList<>();
         result = revisionesmecanicaslocal.filtrarXsolicitud(valor);
         return result;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Reporte de estados de conductores">
+    @GET
+    @Path("reporteconductoresestado")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public ConductoresRepEstado reporteconductoresestado() {
+        ConductoresRepEstado result = new ConductoresRepEstado();
+        int disponibles=0,ocupados=0,indispuestos=0,jublidados=0;
+        for (Tbconductores en : conductorlocal.findAll()) {
+            if (en.getEstado()!= null) {
+                switch(en.getEstado()){
+                    case "Disponible":{
+                        disponibles++;
+                        break;
+                    }
+                    case "Ocupado":{
+                        ocupados++;
+                        break;
+                    }
+                    case "Indispuesto":{
+                        indispuestos++;
+                        break;
+                    }
+                    case "Jubilado":{
+                        jublidados++;
+                        break;
+                    }
+                }
+            }
+        }
+        result.setDisponibles(disponibles);
+        result.setIndispuestos(indispuestos);
+        result.setJubilados(jublidados);
+        result.setOcupados(ocupados);
+        return result;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Reporte de nomina de conductores institucionales">
+    @GET
+    @Path("reporteconductoresnomina")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    public List<ConductorRepNomina> reporteconductoresnomina() {
+        List<ConductorRepNomina> lista = new ArrayList<>();
+        for (Tbconductores en : conductorlocal.findAll()) {
+            ConductorRepNomina datos = new ConductorRepNomina();
+            datos.setConductor(en);
+            Tblicencias licencia = licenciaslocal.findLicencia1(en.getCedula());
+            if (licencia.getIdlicencia()!= null) {
+                datos.setLicencia(licencia);
+            }
+            lista.add(datos);
+        }
+        return lista;
     }
     //</editor-fold>
 }

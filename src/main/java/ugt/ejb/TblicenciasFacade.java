@@ -5,6 +5,7 @@
  */
 package ugt.ejb;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -40,6 +41,23 @@ public class TblicenciasFacade extends AbstractFacade<Tblicencias> implements Tb
             Query query = em.createQuery(consulta);
             query.setParameter(1, cedula);
             result = query.getResultList();
+        } catch (Exception e) {
+        }
+        return result;
+    }
+
+    @Override
+    public Tblicencias findLicencia1(String cedula) {
+        Tblicencias result = new Tblicencias();
+        List<Tblicencias> lista = new ArrayList<>();
+        String consulta;
+        try {
+            consulta = "SELECT c FROM Tblicencias c WHERE c.cedulac.cedula = ?1";
+            Query query = em.createQuery(consulta);
+            query.setParameter(1, cedula);
+            lista = query.getResultList();
+            if(lista.size()>0 && lista.size()<2)
+                result = lista.get(0);
         } catch (Exception e) {
         }
         return result;

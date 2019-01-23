@@ -30,12 +30,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(schema = "esquemaugt")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Tbordenesmovilizaciones_1.findAll", query = "SELECT t FROM Tbordenesmovilizaciones_1 t")
-    , @NamedQuery(name = "Tbordenesmovilizaciones_1.findByNumeroOrden", query = "SELECT t FROM Tbordenesmovilizaciones_1 t WHERE t.numeroOrden = :numeroOrden")
-    , @NamedQuery(name = "Tbordenesmovilizaciones_1.findByFechagenerar", query = "SELECT t FROM Tbordenesmovilizaciones_1 t WHERE t.fechagenerar = :fechagenerar")
-    , @NamedQuery(name = "Tbordenesmovilizaciones_1.findByIdpdf", query = "SELECT t FROM Tbordenesmovilizaciones_1 t WHERE t.idpdf = :idpdf")
-    , @NamedQuery(name = "Tbordenesmovilizaciones_1.findByKminicio", query = "SELECT t FROM Tbordenesmovilizaciones_1 t WHERE t.kminicio = :kminicio")
-    , @NamedQuery(name = "Tbordenesmovilizaciones_1.findByKmfin", query = "SELECT t FROM Tbordenesmovilizaciones_1 t WHERE t.kmfin = :kmfin")})
+    @NamedQuery(name = "Tbordenesmovilizaciones.findAll", query = "SELECT t FROM Tbordenesmovilizaciones t")
+    , @NamedQuery(name = "Tbordenesmovilizaciones.findByNumeroOrden", query = "SELECT t FROM Tbordenesmovilizaciones t WHERE t.numeroOrden = :numeroOrden")
+    , @NamedQuery(name = "Tbordenesmovilizaciones.findByFechagenerar", query = "SELECT t FROM Tbordenesmovilizaciones t WHERE t.fechagenerar = :fechagenerar")
+    , @NamedQuery(name = "Tbordenesmovilizaciones.findByIdpdf", query = "SELECT t FROM Tbordenesmovilizaciones t WHERE t.idpdf = :idpdf")
+    , @NamedQuery(name = "Tbordenesmovilizaciones.findByKminicio", query = "SELECT t FROM Tbordenesmovilizaciones t WHERE t.kminicio = :kminicio")
+    , @NamedQuery(name = "Tbordenesmovilizaciones.findByKmfin", query = "SELECT t FROM Tbordenesmovilizaciones t WHERE t.kmfin = :kmfin")})
 public class Tbordenesmovilizaciones implements Serializable {
 
     private static final long serialVersionUID = 1L;
