@@ -28,6 +28,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import ugt.reportes.ConductorRepNomina;
 import ugt.reportes.ConductoresRepEstado;
+import ugt.reportes.ConductoresRepGenero;
 import ugt.solicitudes.EventoAgenda;
 import ugt.solicitudes.Solicitudesfull;
 import ugt.solicitudes.SolicitudesfullLista;
@@ -919,13 +920,15 @@ public class ws {
     public List<Tbvehiculosconductores> bvehiculosdisponibilidad() {
         List<Tbvehiculosconductores> lista = new ArrayList<>();
         for (Tbvehiculos en : vehiculolocal.findAll()) {
-            Tbvehiculosconductores auxV_C = vehiculoconductorlocal.buscarxplaca(en.getPlaca());
-            if (auxV_C.getTbconductores() != null) {
-                lista.add(auxV_C);
-            } else {
-                Tbvehiculosconductores auxNuevo = new Tbvehiculosconductores();
-                auxNuevo.setTbvehiculos(en);
-                lista.add(auxNuevo);
+            if (!en.getEstado().equals("Rematado")) {
+                Tbvehiculosconductores auxV_C = vehiculoconductorlocal.buscarxplaca(en.getPlaca());
+                if (auxV_C.getTbconductores() != null) {
+                    lista.add(auxV_C);
+                } else {
+                    Tbvehiculosconductores auxNuevo = new Tbvehiculosconductores();
+                    auxNuevo.setTbvehiculos(en);
+                    lista.add(auxNuevo);
+                }
             }
         }
         return lista;
@@ -1193,7 +1196,7 @@ public class ws {
         return result;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Reporte de estados de conductores">
     @GET
     @Path("reporteconductoresestado")
@@ -1201,23 +1204,23 @@ public class ws {
     @Transactional
     public ConductoresRepEstado reporteconductoresestado() {
         ConductoresRepEstado result = new ConductoresRepEstado();
-        int disponibles=0,ocupados=0,indispuestos=0,jublidados=0;
+        int disponibles = 0, ocupados = 0, indispuestos = 0, jublidados = 0;
         for (Tbconductores en : conductorlocal.findAll()) {
-            if (en.getEstado()!= null) {
-                switch(en.getEstado()){
-                    case "Disponible":{
+            if (en.getEstado() != null) {
+                switch (en.getEstado()) {
+                    case "Disponible": {
                         disponibles++;
                         break;
                     }
-                    case "Ocupado":{
+                    case "Ocupado": {
                         ocupados++;
                         break;
                     }
-                    case "Indispuesto":{
+                    case "Indispuesto": {
                         indispuestos++;
                         break;
                     }
-                    case "Jubilado":{
+                    case "Jubilado": {
                         jublidados++;
                         break;
                     }
@@ -1231,7 +1234,7 @@ public class ws {
         return result;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Reporte de nomina de conductores institucionales">
     @GET
     @Path("reporteconductoresnomina")
@@ -1242,12 +1245,45 @@ public class ws {
             ConductorRepNomina datos = new ConductorRepNomina();
             datos.setConductor(en);
             Tblicencias licencia = licenciaslocal.findLicencia1(en.getCedula());
-            if (licencia.getIdlicencia()!= null) {
+            if (licencia.getIdlicencia() != null) {
                 datos.setLicencia(licencia);
             }
             lista.add(datos);
         }
         return lista;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Reporte de estados de conductores">
+    @GET
+    @Path("reporteconductoresgenero")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public ConductoresRepGenero reporteconductoresgenero() {
+        ConductoresRepGenero result = new ConductoresRepGenero();
+        int masculino = 0, femenino = 0, otros = 0;
+        for (Tbconductores en : conductorlocal.findAll()) {
+            if (en.getGenero() != null) {
+                switch (en.getGenero()) {
+                    case "Masculino": {
+                        masculino++;
+                        break;
+                    }
+                    case "Femenino": {
+                        femenino++;
+                        break;
+                    }
+                    case "Otro": {
+                        otros++;
+                        break;
+                    }
+                }
+            }
+        }
+        result.setFemenino(femenino);
+        result.setMasculino(masculino);
+        result.setOtros(otros);
+        return result;
     }
     //</editor-fold>
 }
