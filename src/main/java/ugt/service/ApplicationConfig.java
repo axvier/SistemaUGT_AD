@@ -41,6 +41,7 @@ public class ApplicationConfig extends Application {
         resources.add(ugt.service.TbordenesmovilizacionesFacadeREST.class);
         resources.add(ugt.service.TbpasajerosFacadeREST.class);
         resources.add(ugt.service.TbpdfFacadeREST.class);
+        resources.add(ugt.service.TbregistrosFacadeREST.class);
         resources.add(ugt.service.TbrevisionesmecanicasFacadeREST.class);
         resources.add(ugt.service.TbrolesFacadeREST.class);
         resources.add(ugt.service.TbrolesopcionesFacadeREST.class);

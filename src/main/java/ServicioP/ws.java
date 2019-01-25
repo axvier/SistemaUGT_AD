@@ -75,6 +75,8 @@ public class ws {
     private TbordenesmovilizacionesFacadeLocal ordenesmovilziacionlocal;
     @EJB
     private TbrevisionesmecanicasFacadeLocal revisionesmecanicaslocal;
+    @EJB
+    private TbregistrosFacadeLocal registroslocal;
 
     //<editor-fold defaultstate="collapsed" desc="Busqueda de marca segun el nombre">
 //    @GET
@@ -1286,4 +1288,16 @@ public class ws {
         return result;
     }
     //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Buscar vehiculos por grupo id">
+    @GET
+    @Path("registrodocumentofdesc/{tabla}/{idtabla}/")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    public List<Tbregistros> registrodocumento(@PathParam("tabla") String tabla, @PathParam("idtabla") String idtabla) {
+        List<Tbregistros> lista = new ArrayList<>();
+        lista = registroslocal.findById_TablaDescFecha(idtabla, tabla);
+        return lista;
+    }
+    //</editor-fold>
+
 }
