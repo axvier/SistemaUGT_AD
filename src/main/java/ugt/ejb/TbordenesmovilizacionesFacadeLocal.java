@@ -31,4 +31,6 @@ public interface TbordenesmovilizacionesFacadeLocal {
     int count();
     
     Tbordenesmovilizaciones filtrarOrdenXIdsol(Integer idsolicitud);
+    
+    List<Tbordenesmovilizaciones> findAllOderby(String campo,String orden);
 }

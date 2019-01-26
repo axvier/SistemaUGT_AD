@@ -30,4 +30,5 @@ public interface TbvehiculosdependenciasFacadeLocal {
 
     int count();
     
+    Tbvehiculosdependencias findByPlaca(String placa);
 }

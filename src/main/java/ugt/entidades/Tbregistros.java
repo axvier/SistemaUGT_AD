@@ -60,12 +60,12 @@ public class Tbregistros implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
     @Size(max = 2147483647)
     @Column(name = "responsable")
     private String responsable;
-    @Size(max = 60)
+    @Size(max = 100)
     @Column(name = "accion")
     private String accion;
 

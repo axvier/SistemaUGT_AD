@@ -36,9 +36,10 @@ public class TbsolicitudesFacade extends AbstractFacade<Tbsolicitudes> implement
         List<Tbsolicitudes> result = null;
         String consulta;
         try {
-            consulta = "SELECT t.solicitud FROM Tbseccionsolicitantes t WHERE t.cedulau.cedula = :numero order by t.solicitud.numero asc";
+            consulta = "SELECT t.solicitud FROM Tbseccionsolicitantes t WHERE t.cedulau.cedula = :numero and t.solicitud.estado <> :eliminado order by t.solicitud.numero asc";
             Query con = em.createQuery(consulta);
             con.setParameter("numero", cedula);
+            con.setParameter("eliminado", "eliminada");
             result = con.getResultList();
         } catch (Exception e) {
         }

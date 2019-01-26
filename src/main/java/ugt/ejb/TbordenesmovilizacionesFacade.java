@@ -42,12 +42,25 @@ public class TbordenesmovilizacionesFacade extends AbstractFacade<Tbordenesmovil
             Query con = em.createQuery(consulta);
             con.setParameter("id", idsolicitud);
             listAux = con.getResultList();
-            if(listAux.size() > 0 && listAux.size()<2){
+            if (listAux.size() > 0 && listAux.size() < 2) {
                 result = listAux.get(0);
             }
         } catch (NumberFormatException e) {
         }
         return result;
     }
-    
+
+    @Override
+    public List<Tbordenesmovilizaciones> findAllOderby(String campo, String orden) {
+        List<Tbordenesmovilizaciones> result = new ArrayList<>();
+        String consulta;
+        try {
+            consulta = "SELECT t FROM Tbordenesmovilizaciones t Order by t." + campo + " " + orden;
+            Query con = em.createQuery(consulta);
+            result = con.getResultList();
+        } catch (NumberFormatException e) {
+        }
+        return result;
+    }
+
 }

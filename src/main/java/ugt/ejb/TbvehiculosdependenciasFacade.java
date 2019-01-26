@@ -5,9 +5,12 @@
  */
 package ugt.ejb;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import ugt.entidades.Tbvehiculosdependencias;
 
 /**
@@ -27,6 +30,23 @@ public class TbvehiculosdependenciasFacade extends AbstractFacade<Tbvehiculosdep
 
     public TbvehiculosdependenciasFacade() {
         super(Tbvehiculosdependencias.class);
+    }
+
+    @Override
+    public Tbvehiculosdependencias findByPlaca(String placa) {
+        Tbvehiculosdependencias result = new Tbvehiculosdependencias();
+        List<Tbvehiculosdependencias> lista = new ArrayList<>();
+        try {
+            String consulta = "SELECT t FROM Tbvehiculosdependencias t WHERE t.tbvehiculosdependenciasPK.matricula = :matricula AND t.fechafin is null";
+            Query con = em.createQuery(consulta);
+            con.setParameter("matricula", placa);
+            lista = con.getResultList();
+            if(lista.size()>0 && lista.size()<2){
+                result = lista.get(0);
+            }
+        } catch (Exception e) {
+        }
+        return result;
     }
     
 }

@@ -1123,7 +1123,8 @@ public class ws {
     @Transactional
     public List<Solicitudesfull> blistaordenfullsol() {
         List<Solicitudesfull> lista = new ArrayList<>();
-        for (Tbordenesmovilizaciones orden : ordenesmovilziacionlocal.findAll()) {
+//        for (Tbordenesmovilizaciones orden : ordenesmovilziacionlocal.findAll()) {
+        for (Tbordenesmovilizaciones orden : ordenesmovilziacionlocal.findAllOderby("solicitud.numero", "DESC")) {
             Solicitudesfull full = new Solicitudesfull();
             full.setOrdenMovilzicion(orden);
             Tbsolicitudes solicitud = orden.getSolicitud();
@@ -1250,6 +1251,22 @@ public class ws {
             if (licencia.getIdlicencia() != null) {
                 datos.setLicencia(licencia);
             }
+            List<Tbvehiculosdependencias> listaVehiculosDependencia = new ArrayList<>();
+            for(Tbvehiculosconductores vehCond : vehiculoconductorlocal.buscarxcedula(en.getCedula())){
+                Tbvehiculosdependencias vehDep = vehiculosdependenciaslocal.findByPlaca(vehCond.getTbvehiculos().getPlaca());
+                if(vehDep.getTbentidad()!=null){
+                    listaVehiculosDependencia.add(vehDep);
+                }else{
+                    Tbvehiculosdependencias aux = new Tbvehiculosdependencias();
+                    aux.setTbvehiculos(vehCond.getTbvehiculos());
+                    TbvehiculosdependenciasPK pks = new TbvehiculosdependenciasPK();
+                    pks.setMatricula(vehCond.getTbvehiculos().getPlaca());
+                    listaVehiculosDependencia.add(aux);
+                }
+            }
+            if(listaVehiculosDependencia.size()>0){
+                datos.setListavehiculo(listaVehiculosDependencia);
+            }
             lista.add(datos);
         }
         return lista;
@@ -1289,7 +1306,7 @@ public class ws {
     }
     //</editor-fold>
     
-    //<editor-fold defaultstate="collapsed" desc="Buscar vehiculos por grupo id">
+    //<editor-fold defaultstate="collapsed" desc="Buscar regsitro de documentos">
     @GET
     @Path("registrodocumentofdesc/{tabla}/{idtabla}/")
     @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
