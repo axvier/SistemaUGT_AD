@@ -1373,7 +1373,7 @@ public class ws {
                     Date fin = sdf.parse(fechafin);
                     RElemento pie = new RElemento();
                     pie.setLayenda(true);
-                    pie.setTitulo("Estado de vehiculos");
+                    pie.setTitulo("Estado de Solicitudes");
                     long count;
                     RDataset dato;
                     List<RDataset> listaDatos = new ArrayList<>();
@@ -1386,9 +1386,9 @@ public class ws {
                     dato = new RDataset("Rechazados", "#F3891B", "#F3891B", count);
                     listaDatos.add(dato);
                     //Asignados
-//                count = solicitudeslocal.countEstadosFechas("asignada", inicio, fin);
-//                dato = new RDataset("Asignados", "#E0DF25", "#E0DF25", count);
-//                listaDatos.add(dato);
+                    count = solicitudeslocal.countEstados("asignada");
+                    dato = new RDataset("Asignados", "#934D94", "#934D94", count);
+                    listaDatos.add(dato);
                     //Enviados
                     count = solicitudeslocal.countEstadosFechas("enviado", inicio, fin);
                     dato = new RDataset("Creados", "#E0DF25", "#E0DF25", count);
@@ -1413,7 +1413,7 @@ public class ws {
                 case "estado": {
                     RElemento pie = new RElemento();
                     pie.setLayenda(true);
-                    pie.setTitulo("Estado de vehiculos");
+                    pie.setTitulo("Estado de Solicitudes");
                     long count;
                     RDataset dato;
                     List<RDataset> listaDatos = new ArrayList<>();
@@ -1426,10 +1426,10 @@ public class ws {
                     dato = new RDataset("Rechazados", "#F3891B", "#F3891B", count);
                     listaDatos.add(dato);
                     //Asignados
-//                count = solicitudeslocal.countEstados("asignada");
-//                dato = new RDataset("Asignados", "#E0DF25", "#E0DF25", count);
-//                listaDatos.add(dato);
-                    //Enviados
+                    count = solicitudeslocal.countEstados("asignada");
+                    dato = new RDataset("Asignados", "#934D94", "#934D94", count);
+                    listaDatos.add(dato);
+//                    Enviados
                     count = solicitudeslocal.countEstados("enviado");
                     dato = new RDataset("Creados", "#E0DF25", "#E0DF25", count);
                     listaDatos.add(dato);
@@ -1444,6 +1444,26 @@ public class ws {
                     //Aprobado VR
                     count = solicitudeslocal.countEstados("aprobada");
                     dato = new RDataset("Aprobado VR", "#4D9454", "#4D9454", count);
+                    listaDatos.add(dato);
+
+                    pie.setData(listaDatos);
+                    result.add(pie);
+                    break;
+                }
+                case "OMestado": {
+                    RElemento pie = new RElemento();
+                    pie.setLayenda(true);
+                    pie.setTitulo("Estado de Solicitudes");
+                    long count;
+                    RDataset dato;
+                    List<RDataset> listaDatos = new ArrayList<>();
+                    //Finalizados
+                    count = solicitudeslocal.countEstados("finalizada");
+                    dato = new RDataset("Finalizados", "#66B704", "#66B704", count);
+                    listaDatos.add(dato);
+                    //Aprobado VR
+                    count = solicitudeslocal.countEstados("aprobada");
+                    dato = new RDataset("Aprobado VR", "#4380C5", "#4380C5", count);
                     listaDatos.add(dato);
 
                     pie.setData(listaDatos);
