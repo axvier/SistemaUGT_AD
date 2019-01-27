@@ -5,6 +5,7 @@
  */
 package ugt.ejb;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 import ugt.entidades.Tbsolicitudes;
@@ -38,4 +39,7 @@ public interface TbsolicitudesFacadeLocal {
     List<Tbsolicitudes> filtrarXNOestado(String estado);
     
     List<Tbsolicitudes> findAllEnviadoAsignada();
+    
+    long countEstadosFechas(String estados, Date fechaInicio, Date fechaFin);
+    long countEstados(String estado);
 }

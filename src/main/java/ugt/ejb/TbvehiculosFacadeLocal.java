@@ -35,4 +35,6 @@ public interface TbvehiculosFacadeLocal {
     List<Tbvehiculos> disponibles();
     
     List<Tbvehiculos> filtrarXidgrupo(Integer idgrupo);
+    
+    long countEstado(String estado);
 }

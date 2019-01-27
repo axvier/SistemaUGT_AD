@@ -90,4 +90,18 @@ public class TbconductoresFacade extends AbstractFacade<Tbconductores> implement
         return listaconductor;
     }
 
+    @Override
+    public int countEstado(String estado) {
+        int result = 0;
+        String consulta;
+        try {
+            consulta = "SELECT COUNT(t.cedula) FROM Tbconductores t WHERE t.estado = :estado";
+            Query query = em.createQuery(consulta);
+            query.setParameter("estado", estado);
+            result =(int) query.getSingleResult();
+        } catch (Exception e) {
+        }
+        return result;
+    }
+
 }

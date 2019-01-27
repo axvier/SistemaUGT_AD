@@ -68,11 +68,25 @@ public class TbvehiculosFacade extends AbstractFacade<Tbvehiculos> implements Tb
         try {
             consulta = "SELECT v FROM Tbvehiculos v WHERE v.idgrupo.idgrupo = :idgrupo";
             Query query = em.createQuery(consulta);
-            query.setParameter("idgrupo",idgrupo);
+            query.setParameter("idgrupo", idgrupo);
             listavehiculos = query.getResultList();
         } catch (Exception e) {
         }
         return listavehiculos;
+    }
+
+    @Override
+    public long countEstado(String estado) {
+        long result = 0;
+        String consulta;
+        try {
+            consulta = "SELECT COUNT(v.placa) FROM Tbvehiculos v WHERE v.estado = :estado";
+            Query query = em.createQuery(consulta);
+            query.setParameter("estado", estado);
+            result =(long) query.getSingleResult();
+        } catch (Exception e) {
+        }
+        return result;
     }
 
 }

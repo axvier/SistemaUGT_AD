@@ -38,4 +38,6 @@ public interface TbconductoresFacadeLocal {
     int modconductor(Tbconductores tbconductores, String cedula);
     
     List<Tbconductores> findAllOrden(String forma,String campo);
+    
+    int countEstado(String estado);
 }

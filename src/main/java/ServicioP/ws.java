@@ -5,6 +5,7 @@
  */
 package ServicioP;
 
+import java.text.DateFormat;
 import ugt.ejb.*;
 import ugt.entidades.*;
 import java.text.ParseException;
@@ -29,6 +30,8 @@ import javax.ws.rs.Produces;
 import ugt.reportes.ConductorRepNomina;
 import ugt.reportes.ConductoresRepEstado;
 import ugt.reportes.ConductoresRepGenero;
+import ugt.reportes.RDataset;
+import ugt.reportes.RElemento;
 import ugt.solicitudes.EventoAgenda;
 import ugt.solicitudes.Solicitudesfull;
 import ugt.solicitudes.SolicitudesfullLista;
@@ -1252,11 +1255,11 @@ public class ws {
                 datos.setLicencia(licencia);
             }
             List<Tbvehiculosdependencias> listaVehiculosDependencia = new ArrayList<>();
-            for(Tbvehiculosconductores vehCond : vehiculoconductorlocal.buscarxcedula(en.getCedula())){
+            for (Tbvehiculosconductores vehCond : vehiculoconductorlocal.buscarxcedula(en.getCedula())) {
                 Tbvehiculosdependencias vehDep = vehiculosdependenciaslocal.findByPlaca(vehCond.getTbvehiculos().getPlaca());
-                if(vehDep.getTbentidad()!=null){
+                if (vehDep.getTbentidad() != null) {
                     listaVehiculosDependencia.add(vehDep);
-                }else{
+                } else {
                     Tbvehiculosdependencias aux = new Tbvehiculosdependencias();
                     aux.setTbvehiculos(vehCond.getTbvehiculos());
                     TbvehiculosdependenciasPK pks = new TbvehiculosdependenciasPK();
@@ -1264,7 +1267,7 @@ public class ws {
                     listaVehiculosDependencia.add(aux);
                 }
             }
-            if(listaVehiculosDependencia.size()>0){
+            if (listaVehiculosDependencia.size() > 0) {
                 datos.setListavehiculo(listaVehiculosDependencia);
             }
             lista.add(datos);
@@ -1305,7 +1308,7 @@ public class ws {
         return result;
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Buscar regsitro de documentos">
     @GET
     @Path("registrodocumentofdesc/{tabla}/{idtabla}/")
@@ -1314,6 +1317,143 @@ public class ws {
         List<Tbregistros> lista = new ArrayList<>();
         lista = registroslocal.findById_TablaDescFecha(idtabla, tabla);
         return lista;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Reporte de estados de conductores">
+    @GET
+    @Path("reportevehiculos/{tipo}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public List<RElemento> reportevehiculossestadofull(@PathParam("tipo") String tipo) {
+        List<RElemento> result = new ArrayList<>();
+        switch (tipo) {
+            case "estados": {
+                RElemento pie = new RElemento();
+                pie.setLayenda(true);
+                pie.setTitulo("Estado de vehiculos");
+                long count;
+                RDataset dato;
+                List<RDataset> listaDatos = new ArrayList<>();
+                //Disponible
+                count = vehiculolocal.countEstado("Disponible");
+                dato = new RDataset("Disponibles", "#66B704", "#66B704", count);
+                listaDatos.add(dato);
+                //Ocupados
+                count = vehiculolocal.countEstado("Ocupado");
+                dato = new RDataset("Ocupados", "#4380C5", "#4380C5", count);
+                listaDatos.add(dato);
+                //Rematados
+                count = vehiculolocal.countEstado("Rematado");
+                dato = new RDataset("Rematados", "#DE100A", "#DE100A", count);
+                listaDatos.add(dato);
+                pie.setData(listaDatos);
+                result.add(pie);
+                break;
+            }
+        }
+        return result;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Reporte de estados de conductores">
+    @GET
+    @Path("reporteSolicitudes/{tipo}/{fechainicio}/{fechafin}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public List<RElemento> reporteSolicitudes(@PathParam("tipo") String tipo,
+            @PathParam("fechainicio") String fechainicio,
+            @PathParam("fechafin") String fechafin) {
+        List<RElemento> result = new ArrayList<>();
+        try {
+            switch (tipo) {
+                case "festado": {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date inicio = sdf.parse(fechainicio);
+                    Date fin = sdf.parse(fechafin);
+                    RElemento pie = new RElemento();
+                    pie.setLayenda(true);
+                    pie.setTitulo("Estado de vehiculos");
+                    long count;
+                    RDataset dato;
+                    List<RDataset> listaDatos = new ArrayList<>();
+                    //Finalizados
+                    count = solicitudeslocal.countEstadosFechas("finalizada", inicio, fin);
+                    dato = new RDataset("Finalizados", "#6C5DCC", "#6C5DCC", count);
+                    listaDatos.add(dato);
+                    //Rechazados
+                    count = solicitudeslocal.countEstadosFechas("rechazada", inicio, fin);
+                    dato = new RDataset("Rechazados", "#F3891B", "#F3891B", count);
+                    listaDatos.add(dato);
+                    //Asignados
+//                count = solicitudeslocal.countEstadosFechas("asignada", inicio, fin);
+//                dato = new RDataset("Asignados", "#E0DF25", "#E0DF25", count);
+//                listaDatos.add(dato);
+                    //Enviados
+                    count = solicitudeslocal.countEstadosFechas("enviado", inicio, fin);
+                    dato = new RDataset("Creados", "#E0DF25", "#E0DF25", count);
+                    listaDatos.add(dato);
+                    //Eliminados
+                    count = solicitudeslocal.countEstadosFechas("eliminada", inicio, fin);
+                    dato = new RDataset("Eliminados", "#B2413B", "#B2413B", count);
+                    listaDatos.add(dato);
+                    //Aprobado UGT
+                    count = solicitudeslocal.countEstadosFechas("aprobadaUGT", inicio, fin);
+                    dato = new RDataset("Visto Bueno UGT", "#73CC0D", "#73CC0D", count);
+                    listaDatos.add(dato);
+                    //Aprobado VR
+                    count = solicitudeslocal.countEstadosFechas("aprobada", inicio, fin);
+                    dato = new RDataset("Visto Bueno VR", "#4D9454", "#4D9454", count);
+                    listaDatos.add(dato);
+
+                    pie.setData(listaDatos);
+                    result.add(pie);
+                    break;
+                }
+                case "estado": {
+                    RElemento pie = new RElemento();
+                    pie.setLayenda(true);
+                    pie.setTitulo("Estado de vehiculos");
+                    long count;
+                    RDataset dato;
+                    List<RDataset> listaDatos = new ArrayList<>();
+                    //Finalizados
+                    count = solicitudeslocal.countEstados("finalizada");
+                    dato = new RDataset("Finalizados", "#6C5DCC", "#6C5DCC", count);
+                    listaDatos.add(dato);
+                    //Rechazados
+                    count = solicitudeslocal.countEstados("rechazada");
+                    dato = new RDataset("Rechazados", "#F3891B", "#F3891B", count);
+                    listaDatos.add(dato);
+                    //Asignados
+//                count = solicitudeslocal.countEstados("asignada");
+//                dato = new RDataset("Asignados", "#E0DF25", "#E0DF25", count);
+//                listaDatos.add(dato);
+                    //Enviados
+                    count = solicitudeslocal.countEstados("enviado");
+                    dato = new RDataset("Creados", "#E0DF25", "#E0DF25", count);
+                    listaDatos.add(dato);
+                    //Eliminados
+                    count = solicitudeslocal.countEstados("eliminada");
+                    dato = new RDataset("Eliminados", "#B2413B", "#B2413B", count);
+                    listaDatos.add(dato);
+                    //Aprobado UGT
+                    count = solicitudeslocal.countEstados("aprobadaUGT");
+                    dato = new RDataset("Aprobado UGT", "#73CC0D", "#73CC0D", count);
+                    listaDatos.add(dato);
+                    //Aprobado VR
+                    count = solicitudeslocal.countEstados("aprobada");
+                    dato = new RDataset("Aprobado VR", "#4D9454", "#4D9454", count);
+                    listaDatos.add(dato);
+
+                    pie.setData(listaDatos);
+                    result.add(pie);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return result;
     }
     //</editor-fold>
 
