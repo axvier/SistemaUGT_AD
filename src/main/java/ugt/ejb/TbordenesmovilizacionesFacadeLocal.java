@@ -5,6 +5,7 @@
  */
 package ugt.ejb;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 import ugt.entidades.Tbordenesmovilizaciones;
@@ -32,5 +33,9 @@ public interface TbordenesmovilizacionesFacadeLocal {
     
     Tbordenesmovilizaciones filtrarOrdenXIdsol(Integer idsolicitud);
     
+    Tbordenesmovilizaciones filtrarOrdenXIdsol(Integer idsolicitud,Date startDate, Date endDate);
+    
     List<Tbordenesmovilizaciones> findAllOderby(String campo,String orden);
+    
+    List<Tbordenesmovilizaciones> findAllOderby(String campo,String orden, Date inicio, Date fin);
 }
