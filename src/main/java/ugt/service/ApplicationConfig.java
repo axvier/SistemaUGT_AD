@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ServicioP.ws.class);
+        resources.add(ugt.service.TbcargosFacadeREST.class);
         resources.add(ugt.service.TbcomisionesFacadeREST.class);
         resources.add(ugt.service.TbconductoresFacadeREST.class);
         resources.add(ugt.service.TbdisponibilidadvcFacadeREST.class);
