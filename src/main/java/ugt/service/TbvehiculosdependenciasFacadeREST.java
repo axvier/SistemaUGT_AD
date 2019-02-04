@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -63,17 +64,28 @@ public class TbvehiculosdependenciasFacadeREST extends AbstractFacade<Tbvehiculo
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Tbvehiculosdependencias entity) {
+    @Produces({MediaType.APPLICATION_JSON})
+    @Transactional
+    public Tbvehiculosdependencias ingresar(Tbvehiculosdependencias entity) {
+        Tbvehiculosdependencias obj = new Tbvehiculosdependencias();
         super.create(entity);
+        em.flush();
+        obj = entity;
+        return obj;
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") PathSegment id, Tbvehiculosdependencias entity) {
+    @Produces({MediaType.APPLICATION_JSON})
+    @Transactional
+    public Tbvehiculosdependencias modificar(@PathParam("id") PathSegment id, Tbvehiculosdependencias entity) {
+        Tbvehiculosdependencias obj = new Tbvehiculosdependencias();
         super.edit(entity);
+        em.flush();
+        obj = entity;
+        return obj;
     }
 
     @DELETE

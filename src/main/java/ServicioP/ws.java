@@ -1683,7 +1683,7 @@ public class ws {
                 datos.setVehiculoConductor(vcAux);
             }
             Tbvehiculosdependencias dependencia = vehiculosdependenciaslocal.findByPlaca(en.getPlaca());
-            if(dependencia.getTbentidad()!= null){
+            if (dependencia.getTbentidad() != null) {
                 datos.setVehiculoDependencia(dependencia);
             }
             List<Tbrevisionesmecanicas> revisiones = revisionesmecanicaslocal.filtrarXsolicitud(en.getPlaca());
@@ -1693,6 +1693,85 @@ public class ws {
             lista.add(datos);
         }
         return lista;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Lista total de vehiculo-entidad x placa">
+    @GET
+    @Path("totalvehiculodependencia/{placa}")
+    @Produces({"application/json;  charset=utf-8;  charset=utf-8"})
+    @Consumes({"application/json;  charset=utf-8;  charset=utf-8"})
+    public List<Tbvehiculosdependencias> totalvehiculodependencia(@PathParam("placa") String placa) {
+        List<Tbvehiculosdependencias> userentidad = new ArrayList<>();
+        userentidad = vehiculosdependenciaslocal.findAll(placa);
+        return userentidad;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="filtrar vehiculo dependencia con vehiculo y entidad sin fecha fin">
+    @GET
+    @Path("totalvehiculodependencia/{placa}/{entidad}")
+    @Produces({"application/json;  charset=utf-8;  charset=utf-8"})
+    @Consumes({"application/json;  charset=utf-8;  charset=utf-8"})
+    public Tbvehiculosdependencias totalvehiculodependencia(@PathParam("placa") String placa, @PathParam("entidad") Integer entidad) {
+        Tbvehiculosdependencias result = new Tbvehiculosdependencias();
+        result = vehiculosdependenciaslocal.find(placa, entidad);
+        return result;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Modificar Vehiculo Conductor">
+    @PUT
+    @Path("totalvehiculodependencia/{placa}/{entidad}/{fecha}")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Consumes({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public Tbvehiculosdependencias totalvehiculodependencia(@PathParam("placa") String placa,
+            @PathParam("entidad") String entidad,
+            @PathParam("fecha") String fecha,
+            Tbvehiculosdependencias objeto)
+            throws ParseException {
+        Tbvehiculosdependencias result = new Tbvehiculosdependencias();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss-05:00");
+        result = vehiculosdependenciaslocal.modificar(placa, entidad, sdf.parse(fecha), objeto);
+        return result;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Eliminar Vehiculo Conductor">
+    @PUT
+    @Path("totalvehiculodependenciadelete")
+    @Produces({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Consumes({"application/json;  charset=ISO-8859-1;  charset=utf-8"})
+    @Transactional
+    public String totalvehiculodependencia(Tbvehiculosdependencias objeto) {
+        String result = "KO";
+        try {
+            vehiculosdependenciaslocal.remove(objeto);
+            result = "OK";
+        } catch (Exception e) {
+            System.err.println("ERROR: " + e.getClass().getName() + "***" + e.getMessage());
+            result = "KO";
+        }
+        return result;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="filtrar entidad sin vehiculo asignado - fecha fin">
+    @GET
+    @Path("entidadessinvehiculo")
+    @Produces({"application/json;  charset=utf-8;  charset=utf-8"})
+    public List<Tbentidad> entidadessinvehiculo() {
+        List<Tbentidad> result = new ArrayList<>();
+        for (Tbentidad entidad : entidadlocal.findAll()) {
+            if (entidad.getIdpadre() != null) {
+                Tbvehiculosdependencias depAux = vehiculosdependenciaslocal.find(entidad.getIdentidad());
+                if (depAux.getTbvehiculos() == null) {
+                    result.add(entidad);
+                }
+            }
+        }
+        return result;
     }
     //</editor-fold>
 }

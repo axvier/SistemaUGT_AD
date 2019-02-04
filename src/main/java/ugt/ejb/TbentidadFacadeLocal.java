@@ -30,4 +30,5 @@ public interface TbentidadFacadeLocal {
 
     int count();
     
+    List<Tbentidad> findAll(String campo, String tipoOrden);
 }

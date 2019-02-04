@@ -5,6 +5,7 @@
  */
 package ugt.ejb;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 import ugt.entidades.Tbvehiculosdependencias;
@@ -31,4 +32,12 @@ public interface TbvehiculosdependenciasFacadeLocal {
     int count();
     
     Tbvehiculosdependencias findByPlaca(String placa);
+    
+    List<Tbvehiculosdependencias> findAll(String placa);
+    
+    Tbvehiculosdependencias find(String placa, Integer entidad);
+    
+    Tbvehiculosdependencias find(Integer entidad);
+    
+    Tbvehiculosdependencias modificar(String placa, String entidad, Date fecha,Tbvehiculosdependencias tbvehiculosdependencias);
 }

@@ -5,9 +5,12 @@
  */
 package ugt.ejb;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import ugt.entidades.Tbentidad;
 
 /**
@@ -28,5 +31,17 @@ public class TbentidadFacade extends AbstractFacade<Tbentidad> implements Tbenti
     public TbentidadFacade() {
         super(Tbentidad.class);
     }
-    
+
+    @Override
+    public List<Tbentidad> findAll(String campo, String tipoOrden) {
+        List<Tbentidad> result = new ArrayList<>();
+        try {
+            String consulta = "SELECT t FROM Tbentidad t ORDER BY t." + campo + " " + tipoOrden;
+            Query con = em.createNamedQuery(consulta);
+            result = con.getResultList();
+        } catch (Exception e) {
+        }
+        return result;
+    }
+
 }
